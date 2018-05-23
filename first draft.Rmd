@@ -1,0 +1,60 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r list of packages used}
+
+packages.list <- c("haven","gvlma")
+# add the pacman function
+```
+
+``` {r reading the csv}
+
+from.csv <- read.csv("data.csv",header=T,sep=",")
+from.sav <- read_sav("data.sav")
+
+clean <- na.omit(from.sav)
+clean.data <- as.data.frame(na.omit(from.csv))
+
+L <- list("watch_wd","watch_wd_sq","watch_we", "watch_we_sq", "play_wd", "play_wd_sq", "play_we", "play_we_sq", "sp_wd", "sp_wd_sq", "sp_we", "sp_wd_sq", "comp_wd", "comp_wd_sq","comp_we","comp_we_sq")
+
+cnames<-colnames(clean)
+
+uncontrolled.models <- list(NA)
+
+for (i in 1:(length(L)/2)){
+ 
+  c1 <- match(L[2*i-1],cnames)
+  c2 <- match(L[2*i],cnames)
+  
+  lin.comp <- as.numeric(unlist(clean[,c1]))
+  quad.comp <- as.numeric(unlist(clean[,c2]))
+  
+  uncontrolled.models[[i]] <- lm(clean$mwbi ~  lin.comp + quad.comp)
+}
+
+
+```
+
+
+
+``` {r sketch board of codes}
+
+#  To use higher ordder linear models
+#  fit.quad <- gvlma(weight~poly(dayTime,2,raw=TRUE), data=new.data)
+
+```
+
+Look up the tutorial on potting by ggplot [Plotting means and error bars (ggplot2)](http://www.cookbook-r.com/Graphs/Plotting_means_and_error_bars_(ggplot2))
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
