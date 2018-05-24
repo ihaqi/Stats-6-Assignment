@@ -59,6 +59,66 @@ for (i in 1:(length(L)/2)){
   
   controlled.models[[i]] <- lm(clean$mwbi ~  lin.comp + quad.comp + clean$Genderg + clean$Ethnicg + clean$IMD3)
   }
+    #Creating Table for uncontrolled models
+Table1 <- matrix(nrow = length(L), ncol = 6)
 
-summary(controlled.models[[1]])
+Columns <-c("b", "SE", "CI(2.5%)", "CI(97.5%)", "p", "d")
+colnames(Table1) <- Columns
+rownames(Table1) <- L
 
+
+coefs <- c()
+confints <- c()
+effsizes <- c()
+
+for (i in 1:(length(L))){
+  out <- summary(uncontrolled.models[[i]])
+  coefs <- coef(uncontrolled.models[[i]])
+  confints <- confint(uncontrolled.models[[i]])
+
+  Table1[2*i-1,1] <- coefs[2]
+  Table1[2*i,1] <- coefs[3]
+  Table1[2*i-1, 2] <- out$coefficients[2,2]
+  Table1[2*i,2] <- out$coefficients[3,2]
+  Table1[2*i-1,3] <- confints[2,1] #2.5% part of linear model CI
+  Table1[2*i,3] <- confints[3,1] #2,5% part of quadratic model CI
+  Table1[2*i-1,4] <- confints[2,2] #97.5% part of linear model CI
+  Table1[2*i,4] <- confints[3,2] #97.5% part of quadratic model CI
+  Table1[2*i-1,5] <- out$coefficients[2,4] #p values, should be made nicer by replacing small values with "<.005)
+  Table1[2*i,5] <- out$coefficients[3,4]
+  #cohens d is still needed though, and might take a little time to get sorted
+  }
+
+
+
+    #Creating table for controlled models
+Table2 <- matrix(nrow = length(L), ncol = 6)
+
+colnames(Table2) <- Columns
+rownames(Table2) <- L
+
+
+for (i in 1:(length(L))){
+  out <- summary(controlled.models[[i]])
+  coefs <- coef(controlled.models[[i]])
+  confints <- confint(controlled.models[[i]])
+
+  Table2[2*i-1,1] <- coefs[2]
+  Table2[2*i,1] <- coefs[3]
+  Table2[2*i-1, 2] <- out$coefficients[2,2]
+  Table2[2*i,2] <- out$coefficients[3,2]
+  Table2[2*i-1,3] <- confints[2,1] #2.5% part of linear model CI
+  Table2[2*i,3] <- confints[3,1] #2,5% part of quadratic model CI
+  Table2[2*i-1,4] <- confints[2,2] #97.5% part of linear model CI
+  Table2[2*i,4] <- confints[3,2] #97.5% part of quadratic model CI
+  Table2[2*i-1,5] <- out$coefficients[2,4] #p values, should be made nicer by replacing small values with "<.005)
+  Table2[2*i,5] <- out$coefficients[3,4]
+  #cohens d is still needed though, and might take a little time to get sorted
+}
+
+models.controlled <- Table2
+models.uncontrolled <- Table1
+
+
+View(models.uncontrolled)
+View(models.controlled)
