@@ -5,7 +5,7 @@ output: html_notebook
 
 ```{r list of packages used}
 
-packages.list <- c("haven","gvlma")
+packages.list <- c("haven", "gvlma", "tidyr", "Rmisc")
 # add the pacman function
 ```
 
@@ -37,7 +37,48 @@ for (i in 1:(length(L)/2)){
 
 ```
 
+```{r melting the data}
 
+week.days <- c("watch_wd", "play_wd", "sp_wd", "comp_wd")
+week.ends <- c("watch_we", "play_we", "sp_we", "comp_we")
+
+clean.wide <- clean
+clean.wide$Serial <- factor(clean.wide$Serial)
+
+clean.long <- gather(clean.wide, device, wd.hours, week.days, factor_key=TRUE)
+clean.long <- gather(clean.long, device, we.hours, week.ends, factor_key=TRUE)
+#clean.long.sum <- summarySE(clean.long, measurevar="wd.hours"), groupvars=c("supp","dose"))
+
+summary.clean.wd <- summarySE(data=clean.long, measurevar = "wd.hours", groupvars = c("device","Genderg"))
+
+summa.wide.wd <- summarySE(data=clean.long, measurevar = week.days, groupvars = "Genderg")
+
+
+  summ <- ci.mean(we.hours~Genderg+device,data=clean.long)
+
+summary.clean.we <- summarySE(data=clean.long, measurevar = "we.hours", groupvars = c("device","Genderg"))
+
+tgc2 <- summary.clean.wd
+tgc2$device <- factor(tgc2$device)
+tgc2$Genderg <- factor(tgc2$Genderg)
+
+
+ggplot(tgc2, aes(x=device, y=wd.hours, fill=Genderg)) + 
+    geom_bar(position=position_dodge(), stat="identity") +
+    geom_errorbar(aes(ymin=wd.hours-se, ymax=wd.hours+se),
+                  width=.2,                    # Width of the error bars
+                  position=position_dodge(.9))
+
+
+# Use 95% confidence intervals instead of SEM
+ggplot(summary.clean.wd, aes(x=device, y=wd.hours, fill=Genderg)) + 
+    geom_bar(position=position_dodge(), stat="identity") +
+    geom_errorbar(aes(ymin=wd.hours-ci, ymax=wd.hours+ci),
+                  width=.2,                    # Width of the error bars
+                  position=position_dodge(.9))
+
+
+```
 
 ``` {r sketch board of codes}
 
