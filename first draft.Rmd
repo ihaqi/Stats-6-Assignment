@@ -14,7 +14,7 @@ packages.list <- c("haven", "gvlma", "tidyr", "Rmisc")
 from.csv <- read.csv("data.csv",header=T,sep=",")
 from.sav <- read_sav("data.sav")
 
-clean <- na.omit(from.sav)
+clean<- as.data.frame(na.omit(from.sav))
 clean.data <- as.data.frame(na.omit(from.csv))
 
 L <- list("watch_wd","watch_wd_sq","watch_we", "watch_we_sq", "play_wd", "play_wd_sq", "play_we", "play_we_sq", "sp_wd", "sp_wd_sq", "sp_we", "sp_wd_sq", "comp_wd", "comp_wd_sq","comp_we","comp_we_sq")
@@ -42,8 +42,8 @@ for (i in 1:(length(L)/2)){
 week.days <- c("watch_wd", "play_wd", "sp_wd", "comp_wd")
 week.ends <- c("watch_we", "play_we", "sp_we", "comp_we")
 
-clean.wide <- clean
-clean.wide$Serial <- factor(clean.wide$Serial)
+clean.wide <- clean#.data
+clean.wide[,1] <- factor(clean.wide[,1])
 
 clean.long <- gather(clean.wide, device, wd.hours, week.days, factor_key=TRUE)
 clean.long <- gather(clean.long, device, we.hours, week.ends, factor_key=TRUE)
