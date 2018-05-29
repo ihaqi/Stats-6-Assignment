@@ -1,0 +1,241 @@
+---
+title: "Data Assignment 2 - Code Appendix"
+author: "MohammadHossein Haqiqatkhah (**r0607671**)
+Gustavo Villca Ponce (**r0292033**)
+Andrea Bortoletti (**r0694542**)
+Shyam Sekaran  (**r0689317**)"
+date: "December 22, 2017"
+output:
+  pdf_document: default
+---
+
+## Installing and loading required libraries
+
+We define `R Markdown` defaults and load the libraries:
+```{r echo=TRUE, include=TRUE}
+
+library("car")
+library("MASS")
+library("gvlma")
+library("ggplot2")
+library("knitr")
+
+knitr::opts_chunk$set(echo=FALSE,cache=TRUE, autodep=TRUE,cache.comments=FALSE,  message=FALSE, warning=FALSE)
+dev.off() # "This helps avoid some errors with ggplot
+```
+
+## Defining the functions
+
+We define functions to make the code re-usable and more efficient.
+
+We define a function to check the assumptions of linearity, homoscedastisity, and normality for each model. This function gets the `gvlma` model az arguments and returns the desicions as a `data.frame`.
+
+`gvlma` estimates a regression model, and on top of that, performs a comprehensive list of tests on the model. We use the decisions of the tests to accept or reject the assumptions.
+
+* `Linearity` is checked by the `link function`
+* `Normality` is accepted if the both `skewness` and `kurtosis` are rejected.
+* `Homoscedastisity` is accepted if the `heteroscedasticity` is rejected. In `gvlma` output, however, this is reflected as `Heteroscedasticity    Assumptions acceptable.`
+
+```{r assumption.checker , echo=TRUE, include=TRUE, message=FALSE}
+assumption.checker <- function(fitted.model){
+  # Skewness: fitted.model$GlobalTest$DirectionalStat1
+  # Kurtosis: fitted.model$GlobalTest$DirectionalStat2
+  # Linearity: fitted.model$GlobalTest$DirectionalStat3
+  # Homosc: fit.lin$GlobalTest$DirectionalStat4
+  assumption <- c(Linearity=!fitted.model$GlobalTest$DirectionalStat3$Decision,
+                Normality=(!fitted.model$GlobalTest$DirectionalStat1$Decision&!fitted.model$GlobalTest$DirectionalStat2$Decision),
+                Homoscedastisity=!fitted.model$GlobalTest$DirectionalStat4$Decision)
+}
+```
+
+Then, `model.selector` compares different regression models (1st-degree to 4th-degree). As outputs, it prints `gvlma` results, and the assumptions. Finally, the comparison is made by Bayesian Information Criteria; it prints the BIC table, and returns the best degree.
+```{r model.selector , echo=TRUE, include=TRUE, message=FALSE}
+model.selector <- function(input.data,starting.day, print.it){
+  new.data<-subset(input.data,dayTime>=starting.day)
+  
+  # making the regression models
+  fit.lin <- gvlma(weight~poly(dayTime,1,raw=TRUE), data=new.data)
+  fit.quad <- gvlma(weight~poly(dayTime,2,raw=TRUE), data=new.data)
+  fit.cubic <- gvlma(weight~poly(dayTime,3,raw=TRUE), data=new.data)
+  fit.quartic <- gvlma(weight~poly(dayTime,4,raw=TRUE), data=new.data)
+  
+  # testing assumptions by printing gvlma results
+  print("gvlma results:")
+  print(fit.lin)
+  print(fit.quad)
+  print(fit.cubic)
+  print(fit.quartic)
+  
+
+Linear <- assumption.checker(fit.lin)
+Quadratic <- assumption.checker(fit.quad)
+Cubic <- assumption.checker(fit.cubic)
+Quartic <- assumption.checker(fit.quartic)
+assumptions <- rbind(Linear,Quadratic,Cubic,Quartic)
+print("Summary of regression assumptions:")
+print(assumptions)
+
+  # Comparing the models based on BIC
+  calc.bic <- BIC(fit.lin,fit.quad,fit.cubic,fit.quartic)
+  # reporting BIC
+  print("The BIC table:")
+  print(calc.bic)
+  
+  # reporting the best model
+  degree.model <- which.min(calc.bic$BIC)
+  model.name=rownames(calc.bic)[degree.model]
+  print(paste("The best model is",model.name))
+  
+  degree.model
+
+}
+```
+
+The `model.slope` is small function gets the `input.data` and the `starting.day`  as arguments. It returns the slope ($\beta_1$) of the linear regression models fitted to the data from the specified date to the end.
+```{r model.slope, echo=TRUE, include=TRUE, message=FALSE}
+model.slope <- function(input.data,starting.day){
+  new.data<-subset(input.data,dayTime>=starting.day)
+  fit <- gvlma(weight~poly(dayTime,1,raw=TRUE), data=new.data)
+  fit$coefficients[2]
+  }
+```
+
+The `model.fitter` fits a regression model of a desired degree (`degree.model`) with an arbitrary initial day (`starting.day`) to the data (`input.data`).
+```{r model.fitter, echo=TRUE, include=TRUE, message=FALSE}
+model.fitter <- function(input.data,starting.day,degree.model){
+  
+  new.data<-subset(input.data,dayTime>=starting.day)
+  fit <- gvlma(weight~poly(dayTime,degree.model,raw=TRUE), data=new.data)
+  
+  predicted.data <- data.frame(dayTime = seq(from = range(new.data$dayTime)[1], to = day.future.reception, length.out = 100))
+  regression.fit <- predict(fit, newdata = predicted.data, se.fit = TRUE, interval = "confidence")
+
+  
+  predicted.data$lci <- regression.fit$fit[,2]
+  predicted.data$fit <- regression.fit$fit[,1]
+  predicted.data$uci <- regression.fit$fit[,3]
+  
+  predicted.data
+}  
+```
+
+Finally, `Xmass.checker` checks whether holiday parties had affected his diet. It gets a reference day (`ref.day`), the day the parties started (`start.day`), and  the day the parties were over (`finish.day`).
+
+It fits three linear models to the data (starting from those days), and prints the slopes. It also prints a decision about the effect of the parties on his diet by comparing the slopes of the three linear models.
+
+```{r Xmass.checker, echo=TRUE, include=TRUE, message=FALSE}
+Xmass.checker <- function(input.data,ref.day,start.day,finish.day){
+  input.data <- subset(input.data,dayTime>=ref.day)
+  # fitting models for later days
+  lin.est.min <- model.fitter(input.data,ref.day,1)
+  lin.start.parties <- model.fitter(input.data,start.day,1)
+  lin.end.parties <- model.fitter(input.data,finish.day,1)
+  
+  # extracting the slopes coefficient
+  slope.ref.day <- model.slope(input.data,ref.day)
+  slope.start.day <- model.slope(input.data,start.day)
+  slope.end.day <- model.slope(input.data,finish.day)
+print("Slopes of the linear models aroud the party period:")  
+  print(paste("Slope of the reg. line after the refrence day:",round(slope.ref.day,4)))
+  print(paste("Slope of the reg. line after starting the Xmas parties:",round(slope.start.day,4)))
+  print(paste("Slope of the reg. line after ending the Xmas parties:",round(slope.end.day,4)))
+
+  print("Decisions about the party days:")
+  if(slope.start.day>slope.ref.day){
+    if(slope.start.day>slope.end.day){
+      print("There is a noticable change in weight gain during the Xmas holidays, but he managed to go back on diet afterwards!")
+    }else{print("There is a noticable change in weight gain during the Xmas holidays.")}
+  }else{
+    print("There is NO noticable change in weight gain during the Xmas holidays.")
+  }
+  
+  # plotting the different fitted models
+  ggplot(lin.est.min, aes(x = dayTime, y = fit)) +
+    theme_bw() +
+    geom_line() +
+    geom_point(data = input.data, aes(x = dayTime, y = weight))+
+    geom_smooth(aes(ymin = lci, ymax = uci,fill="After the Ref. day"), stat = "identity",col="Red")+
+    geom_smooth(data=lin.start.parties,aes(ymin = lci, ymax = uci,fill="After the start of Xmas parties"), stat = "identity",col="Green")+
+    geom_smooth(data=lin.end.parties,aes(ymin = lci, ymax = uci,fill="After the end of Xmas parties"), stat = "identity") +
+    guides(fill=FALSE)
+}
+```
+
+# The main code
+We first read the data.
+In order to differentiate between measurements made in mornings and evenings, we define a new variable `dayTime`; for the measurements in the morning, `dayTime` will be equal to the `dayNumber`, and for evenings, we add $0.5$ to `dayNumber`.
+```{r read.data, echo=TRUE, include=TRUE, message=FALSE}
+# setting the directory
+dir <- "C:/Users/Mohammad Hossein/OneDrive/Master of Psychology (KUL - MPsy)/Stats 4/Data Assignment/Assignment 2"
+setwd(dir)
+# Reading the data:
+actual.data <- read.csv("WeightLossGroup184.csv", header=TRUE, sep=" ")
+# Taking into account mornings and evenings in our data:
+actual.data$dayTime<-actual.data$dayNumber
+actual.data$dayTime[actual.data$time=="evening"]<-actual.data$dayTime[actual.data$time=="evening"]+0.5
+```
+
+We define the important days provided in the question. The numbers correspond to the day numbers of the dates respectively(e.g. $27/12$) We also define the critical weight to fit the suit.
+```{r defining.dates, echo=TRUE, include=TRUE, message=FALSE}
+# defining the important dates
+day.total <- max(actual.data$dayTime)
+day.start.parties <- 85
+day.end.parties <- 88
+day.future.reception <<- 104.5
+
+# setting the critical weight to fit the suit
+critical.weight <- 72
+```
+
+## First question
+
+We check for the best model by calling `model.selector` function to have the `gvlma` models and results for the regression models. It also tells whether the regression assumptions (linearity, normality, and homoscedasticity) are met. In the end, it prints the BIC table and defines the best model. It also plots the graph of the best model.
+
+```{r echo=TRUE, include=TRUE}
+# Estiating based on the best model
+best.degree <- model.selector(actual.data,0)
+best.model <- model.fitter(actual.data,0,best.degree)
+# plotting the best curve
+ggplot(best.model, aes(x = dayTime, y = fit)) +
+  theme_bw() +
+  geom_line() +
+  geom_point(data = actual.data, aes(x = dayTime, y = weight))+
+  geom_smooth(aes(ymin = lci, ymax = uci), stat = "identity",col="Red")
+```
+## Second Question
+
+In order to compare the Christmas parties with other days, we first find the day where the curve begins to show an increase (i.e. when he starts gaining weight).
+
+Since we know that the best model is quadratic, we use the characteristics of the hyperbolic fuctions to find the minimum estimated weight.
+
+Then, we use `Xmass.checker` to plot three linear regression mdoels, one from the minimum estimated weight point where he begins gaining weight, one when the Christmas parties begin, and, one where the christmas parties end. This is done to compare the different coefficients in order to see whether there is indeed a significant increase during this period and to see if a linear regression analysis can be used to show this.
+
+```{r echo=TRUE, include=TRUE}
+ 
+fit.quad <- gvlma(weight~poly(dayTime,2,raw=TRUE), data=actual.data)
+
+# extracting the coefficients of the quadratic model
+beta.1 <- fit.quad$coefficients[2]
+beta.2 <- fit.quad$coefficients[3]
+
+# calculating the minimum of the curve
+day.est.min <- -beta.1/(2*beta.2)
+
+# investigating around the Christmas parties
+Xmass.checker(actual.data,day.est.min,day.start.parties,day.end.parties)
+```
+
+## Third Question
+In order to decide whether he will fit in his new suit on the reception night, we estimate his weight in that day (`dayTime = day.future.reception`), and compare it to the critical weight (`critical.weight`). After, we make a decision based on the results to see if he can fit in his new suit.
+
+```{r echo=TRUE, include=TRUE}
+# estimating his weight on the reception night
+est.final.weight <- round(best.model[dim(best.model)[1],2:4],3)
+print(paste("His weight will be around",est.final.weight[2],"kg, and the confidence interval of 95% is",est.final.weight[1],"-",est.final.weight[3],"kg."))
+
+# deciding about the tuxedo
+if(est.final.weight[3]<critical.weight){print("He will definitely fit in his new suit.")}
+if(est.final.weight[3]>critical.weight & est.final.weight[1]<critical.weight){print("He might fit in his new suit.")}
+if(est.final.weight[1]>critical.weight){print("He will definitely NOT fit in his new suit. (He should buy another one!)")}
+
+```

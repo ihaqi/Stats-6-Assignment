@@ -14,8 +14,8 @@ packages.list <- c("haven", "gvlma", "tidyr", "Rmisc")
 from.csv <- read.csv("data.csv",header=T,sep=",")
 from.sav <- read_sav("data.sav")
 
-clean<- as.data.frame(na.omit(from.sav))
-clean.data <- as.data.frame(na.omit(from.csv))
+clean<- as.data.frame(na.omit(from.csv))
+clean <- as.data.frame(na.omit(from.sav))
 
 L <- list("watch_wd","watch_wd_sq","watch_we", "watch_we_sq", "play_wd", "play_wd_sq", "play_we", "play_we_sq", "sp_wd", "sp_wd_sq", "sp_we", "sp_wd_sq", "comp_wd", "comp_wd_sq","comp_we","comp_we_sq")
 
@@ -24,7 +24,7 @@ cnames<-colnames(clean)
 uncontrolled.models <- list(NA)
 
 for (i in 1:(length(L)/2)){
- 
+
   c1 <- match(L[2*i-1],cnames)
   c2 <- match(L[2*i],cnames)
   
@@ -32,6 +32,8 @@ for (i in 1:(length(L)/2)){
   quad.comp <- as.numeric(unlist(clean[,c2]))
   
   uncontrolled.models[[i]] <- lm(clean$mwbi ~  lin.comp + quad.comp)
+  l <- lm(clean$mwbi ~ lin.comp)
+  q <- lm(clean$mwbi ~ quad.comp)
 }
 
 
@@ -53,8 +55,7 @@ summary.clean.wd <- summarySE(data=clean.long, measurevar = "wd.hours", groupvar
 
 summa.wide.wd <- summarySE(data=clean.long, measurevar = week.days, groupvars = "Genderg")
 
-
-  summ <- ci.mean(we.hours~Genderg+device,data=clean.long)
+summ <- ci.mean(we.hours~Genderg+device,data=clean.long)
 
 summary.clean.we <- summarySE(data=clean.long, measurevar = "we.hours", groupvars = c("device","Genderg"))
 
@@ -62,6 +63,12 @@ tgc2 <- summary.clean.wd
 tgc2$device <- factor(tgc2$device)
 tgc2$Genderg <- factor(tgc2$Genderg)
 
+
+cg1<-subset(clean,Genderg==1)
+cg2<-subset(clean,Genderg==2)
+
+cg1.long <- gather(cg1, device, wd.hours, week.days, factor_key=TRUE)
+sum1 <- 
 
 ggplot(tgc2, aes(x=device, y=wd.hours, fill=Genderg)) + 
     geom_bar(position=position_dodge(), stat="identity") +
@@ -77,6 +84,15 @@ ggplot(summary.clean.wd, aes(x=device, y=wd.hours, fill=Genderg)) +
                   width=.2,                    # Width of the error bars
                   position=position_dodge(.9))
 
+
+```
+
+```{r ploting the data eith p values}
+
+ggbarplot(clean.long, x = "device", y = "hours", add = "mean_se",
+          color = "Genderg", palette = "jco", 
+          position = position_dodge(0.8))+
+  stat_compare_means(aes(group = Genderg), label = "p.signif", label.y = 29)
 
 ```
 

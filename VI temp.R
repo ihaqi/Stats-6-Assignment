@@ -1,6 +1,6 @@
 
 
-clean <- na.omit(data)
+#clean <- na.omit(data)
 
 watch_wd <- clean$watch_wd
 watch_wd_sq <- clean$watch_wd_sq
@@ -58,6 +58,7 @@ for (i in 1:(length(L)/2)){
   quad.comp <- as.numeric(unlist(clean[,c4]))
   
   controlled.models[[i]] <- lm(clean$mwbi ~  lin.comp + quad.comp + clean$Genderg + clean$Ethnicg + clean$IMD3)
+  
   }
     #Creating Table for uncontrolled models
 Table1 <- matrix(nrow = length(L), ncol = 6)
@@ -71,11 +72,17 @@ coefs <- c()
 confints <- c()
 effsizes <- c()
 
-for (i in 1:(length(L))){
+for (i in 1:(length(L)/2)){
+  model <- uncontrolled.models[[i]]
   out <- summary(uncontrolled.models[[i]])
   coefs <- coef(uncontrolled.models[[i]])
   confints <- confint(uncontrolled.models[[i]])
 
+  df.sqrt <- sqrt(model$df)
+  cohens.d.lin <- 2*abs(summary(model)$coefficients[2,3]/df.sqrt)
+  cohens.d.quad <- 2*abs(summary(model)$coefficients[3,3]/df.sqrt)
+  
+ # print(cohens.d.quad) 
   Table1[2*i-1,1] <- coefs[2]
   Table1[2*i,1] <- coefs[3]
   Table1[2*i-1, 2] <- out$coefficients[2,2]
@@ -86,6 +93,8 @@ for (i in 1:(length(L))){
   Table1[2*i,4] <- confints[3,2] #97.5% part of quadratic model CI
   Table1[2*i-1,5] <- out$coefficients[2,4] #p values, should be made nicer by replacing small values with "<.005)
   Table1[2*i,5] <- out$coefficients[3,4]
+  Table1[2*i-1,6] <- cohens.d.lin
+  Table1[2*i,6] <- cohens.d.quad
   #cohens d is still needed though, and might take a little time to get sorted
   }
 
@@ -98,7 +107,7 @@ colnames(Table2) <- Columns
 rownames(Table2) <- L
 
 
-for (i in 1:(length(L))){
+for (i in 1:(length(L)/2)){
   out <- summary(controlled.models[[i]])
   coefs <- coef(controlled.models[[i]])
   confints <- confint(controlled.models[[i]])
