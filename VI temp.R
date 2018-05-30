@@ -43,7 +43,7 @@ for (i in 1:(length(L)/2)){
 
 #Linear and quadratic Models with correction for controlling variables
 
-L <- list("watch_wd","watch_wd_sq","watch_we", "watch_we_sq", "play_wd", "play_wd_sq", "play_we", "play_we_sq", "sp_wd", "sp_wd_sq", "sp_we", "sp_wd_sq", "comp_wd", "comp_wd_sq","comp_we","comp_we_sq")
+L <- list("watch_wd","watch_wd_sq","watch_we", "watch_we_sq", "play_wd", "play_wd_sq", "play_we", "play_we_sq", "comp_wd", "comp_wd_sq","comp_we", "comp_we_sq", "sp_wd", "sp_wd_sq", "sp_we", "sp_we_sq")
 
 cnames<-colnames(clean)
 
