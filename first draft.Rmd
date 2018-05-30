@@ -16,8 +16,17 @@ from.sav <- read_sav("data.sav")
 
 clean<- as.data.frame(na.omit(from.csv))
 clean <- as.data.frame(na.omit(from.sav))
+clean<-from.sav
+clean[is.na(clean)]<-0
 
-L <- list("watch_wd","watch_wd_sq","watch_we", "watch_we_sq", "play_wd", "play_wd_sq", "play_we", "play_we_sq", "sp_wd", "sp_wd_sq", "sp_we", "sp_wd_sq", "comp_wd", "comp_wd_sq","comp_we","comp_we_sq")
+L <- list("watch_wd","watch_wd_sq","watch_we", "watch_we_sq", "play_wd", "play_wd_sq", "play_we", "play_we_sq", "sp_wd", "sp_wd_sq", "sp_we", "sp_we_sq", "comp_wd", "comp_wd_sq","comp_we","comp_we_sq")
+
+l <- list("watch_wd","watch_we", "play_wd", "play_we", "comp_wd", "comp_we", "sp_wd", "sp_we")
+
+for (i in 1:length(l)){
+  print(round(table.maker(model.maker(clean,l[i],control.vars = F)),2))
+}
+
 
 cnames<-colnames(clean)
 
@@ -102,6 +111,14 @@ ggbarplot(clean.long, x = "device", y = "hours", add = "mean_se",
 #  fit.quad <- gvlma(weight~poly(dayTime,2,raw=TRUE), data=new.data)
 
 ```
+
+
+SP_we CI's are different
+mwb: they used
+mwbi: didn't use
+
+library(DataExplorer)
+create_report(clean)
 
 Look up the tutorial on potting by ggplot [Plotting means and error bars (ggplot2)](http://www.cookbook-r.com/Graphs/Plotting_means_and_error_bars_(ggplot2))
 

@@ -1,14 +1,16 @@
 model.maker <- function(data, variable.name, control.vars=F){
   #  L <- list("watch_wd","watch_wd_sq","watch_we", "watch_we_sq", "play_wd", "play_wd_sq", "play_we", "play_we_sq", "sp_wd", "sp_wd_sq", "sp_we", "sp_wd_sq", "comp_wd", "comp_wd_sq","comp_we","comp_we_sq")
   cnames <- colnames(data)
-  name.no <- match(variable.name,cnames)
-  
-  lin.comp <- as.numeric(unlist(data[,name.no]))
-  quad.comp <- lin.comp^2
+  name.no1 <- match(variable.name,cnames)
+  name.no2 <- match(paste(variable.name,"_sq", sep=""),cnames)
+  lin.comp <- as.numeric(unlist(data[,name.no1]))
+  quad.comp <- as.numeric(unlist(data[,name.no2]))
   
   model <- lm(data$mwbi ~ lin.comp + quad.comp)
   if (control.vars){model <- lm(data$mwbi ~ lin.comp + quad.comp + data$Genderg + data$Ethnicg + data$IMD3)}
-  
+
+    L <- list("watch_wd","watch_wd_sq","watch_we", "watch_we_sq", "play_wd", "play_wd_sq", "play_we", "play_we_sq", "sp_wd", "sp_wd_sq", "sp_we", "sp_wd_sq", "comp_wd", "comp_wd_sq","comp_we","comp_we_sq")
+
   return(model)
 }
 

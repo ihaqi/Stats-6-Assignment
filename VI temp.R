@@ -38,7 +38,7 @@ for (i in 1:(length(L)/2)){
   lin.comp <- as.numeric(unlist(clean[,c1]))
   quad.comp <- as.numeric(unlist(clean[,c2]))
   
-  uncontrolled.models[[i]] <- lm(clean$mwbi ~  lin.comp + quad.comp)
+  uncontrolled.models[[i]] <- lm(clean$mwb ~  lin.comp + quad.comp)
 }
 
 #Linear and quadratic Models with correction for controlling variables
@@ -57,7 +57,7 @@ for (i in 1:(length(L)/2)){
   lin.comp <- as.numeric(unlist(clean[,c3]))
   quad.comp <- as.numeric(unlist(clean[,c4]))
   
-  controlled.models[[i]] <- lm(clean$mwbi ~  lin.comp + quad.comp + clean$Genderg + clean$Ethnicg + clean$IMD3)
+  controlled.models[[i]] <- lm(clean$mwb ~  lin.comp + quad.comp + clean$Genderg + clean$Ethnicg + clean$IMD3)
   
   }
     #Creating Table for uncontrolled models
