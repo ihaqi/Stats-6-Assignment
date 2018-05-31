@@ -23,8 +23,15 @@ L <- list("watch_wd","watch_wd_sq","watch_we", "watch_we_sq", "play_wd", "play_w
 
 l <- list("watch_wd","watch_we", "play_wd", "play_we", "comp_wd", "comp_we", "sp_wd", "sp_we")
 
+c<-clean
+
+c$Ethnicg[c$Ethnicg==1]<-10
+c$Ethnicg[c$Ethnicg==3]<-1
+c$Ethnicg[c$Ethnicg==10]<-3
+
+
 for (i in 1:length(l)){
-  print(round(table.maker(model.maker(clean,l[i],control.vars = F)),2))
+  print(round(table.maker(model.maker(clean,l[i], add.gender=T, add.ethnic=T, add.ses=T, agg.vars = T)),10))
 }
 
 
@@ -116,6 +123,7 @@ ggbarplot(clean.long, x = "device", y = "hours", add = "mean_se",
 SP_we CI's are different
 mwb: they used
 mwbi: didn't use
+$$\hat{\lambda}_{MLE} = \bar{x} = `r df.sqrt`$$
 
 library(DataExplorer)
 create_report(clean)

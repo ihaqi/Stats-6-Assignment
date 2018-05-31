@@ -1,4 +1,4 @@
-model.maker <- function(data, variable.name, add.gender=F, add.ethnic=F, add.ses=F){
+model.maker <- function(data, variable.name, add.gender=F, add.ethnic=F, add.ses=F, agg.vars=F){
   #  L <- list("watch_wd","watch_wd_sq","watch_we", "watch_we_sq", "play_wd", "play_wd_sq", "play_we", "play_we_sq", "sp_wd", "sp_wd_sq", "sp_we", "sp_wd_sq", "comp_wd", "comp_wd_sq","comp_we","comp_we_sq")
   cnames <- colnames(data)
   name.no1 <- match(variable.name,cnames)
@@ -6,21 +6,32 @@ model.maker <- function(data, variable.name, add.gender=F, add.ethnic=F, add.ses
   lin.comp <- as.numeric(unlist(data[,name.no1]))
   quad.comp <- as.numeric(unlist(data[,name.no2]))
   
+
+  gender.comp <- data$male
+  ethnic.comp <- data$minority
+  ses.comp <- data$deprived
+
+  if(agg.vars){
+    gender.comp <- data$Genderg
+    ethnic.comp <- data$Ethnicg
+    ses.comp <- data$IMD3
+  }
+  
   model <- lm(data$mwb ~ lin.comp + quad.comp)
   if (add.gender==T & add.ethnic==T & add.ses==T){
-    model <- lm(data$mwb ~ lin.comp + quad.comp + data$Genderg + data$Ethnicg + data$IMD3)}
+    model <- lm(data$mwb ~ lin.comp + quad.comp + gender.comp + ethnic.comp + ses.comp)}
   if (add.gender==T & add.ethnic==T & add.ses==F){
-    model <- lm(data$mwb ~ lin.comp + quad.comp + data$Genderg + data$Ethnicg)}
+    model <- lm(data$mwb ~ lin.comp + quad.comp + gender.comp + ethnic.comp)}
   if (add.gender==T & add.ethnic==F & add.ses==T){
-    model <- lm(data$mwb ~ lin.comp + quad.comp + data$Genderg + data$IMD3)}
+    model <- lm(data$mwb ~ lin.comp + quad.comp + gender.comp + ses.comp)}
   if (add.gender==T & add.ethnic==F & add.ses==F){
-    model <- lm(data$mwb ~ lin.comp + quad.comp + data$Genderg)}
+    model <- lm(data$mwb ~ lin.comp + quad.comp + gender.comp)}
   if (add.gender==F & add.ethnic==T & add.ses==T){
-    model <- lm(data$mwb ~ lin.comp + quad.comp + data$Ethnicg + data$IMD3)}
+    model <- lm(data$mwb ~ lin.comp + quad.comp + ethnic.comp + ses.comp)}
   if (add.gender==F & add.ethnic==T & add.ses==F){
-    model <- lm(data$mwb ~ lin.comp + quad.comp + data$Ethnicg)}
+    model <- lm(data$mwb ~ lin.comp + quad.comp + ethnic.comp)}
   if (add.gender==F & add.ethnic==F & add.ses==T){
-    model <- lm(data$mwb ~ lin.comp + quad.comp + data$IMD3)}
+    model <- lm(data$mwb ~ lin.comp + quad.comp + ses.comp)}
 
   L <- list("watch_wd","watch_wd_sq","watch_we", "watch_we_sq", "play_wd", "play_wd_sq", "play_we", "play_we_sq", "comp_wd", "comp_wd_sq","comp_we", "comp_we_sq", "sp_wd", "sp_wd_sq", "sp_we", "sp_we_sq")
   return(model)
@@ -73,3 +84,4 @@ concise <- function (model){
   
 }
 
+#data.driver <- function(data,)
