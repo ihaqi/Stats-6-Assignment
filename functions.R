@@ -7,19 +7,19 @@ model.maker <- function(data, variable.name, add.gender=F, add.ethnic=F, add.ses
   quad.comp <- as.numeric(unlist(data[,name.no2]))
   
   model <- lm(data$mwb ~ lin.comp + quad.comp)
-  if (add.gender==T,add.ethnic==T,add.ses==T){
+  if (add.gender==T & add.ethnic==T & add.ses==T){
     model <- lm(data$mwb ~ lin.comp + quad.comp + data$Genderg + data$Ethnicg + data$IMD3)}
-  if (add.gender==T,add.ethnic==T,add.ses==F){
+  if (add.gender==T & add.ethnic==T & add.ses==F){
     model <- lm(data$mwb ~ lin.comp + quad.comp + data$Genderg + data$Ethnicg)}
-  if (add.gender==T,add.ethnic==F,add.ses==T){
+  if (add.gender==T & add.ethnic==F & add.ses==T){
     model <- lm(data$mwb ~ lin.comp + quad.comp + data$Genderg + data$IMD3)}
-  if (add.gender==T,add.ethnic==F,add.ses==F){
+  if (add.gender==T & add.ethnic==F & add.ses==F){
     model <- lm(data$mwb ~ lin.comp + quad.comp + data$Genderg)}
-  if (add.gender==F,add.ethnic==T,add.ses==T){
+  if (add.gender==F & add.ethnic==T & add.ses==T){
     model <- lm(data$mwb ~ lin.comp + quad.comp + data$Ethnicg + data$IMD3)}
-  if (add.gender==F,add.ethnic==T,add.ses==F){
+  if (add.gender==F & add.ethnic==T & add.ses==F){
     model <- lm(data$mwb ~ lin.comp + quad.comp + data$Ethnicg)}
-  if (add.gender==F,add.ethnic==F,add.ses==T){
+  if (add.gender==F & add.ethnic==F & add.ses==T){
     model <- lm(data$mwb ~ lin.comp + quad.comp + data$IMD3)}
 
   L <- list("watch_wd","watch_wd_sq","watch_we", "watch_we_sq", "play_wd", "play_wd_sq", "play_we", "play_we_sq", "comp_wd", "comp_wd_sq","comp_we", "comp_we_sq", "sp_wd", "sp_wd_sq", "sp_we", "sp_we_sq")
