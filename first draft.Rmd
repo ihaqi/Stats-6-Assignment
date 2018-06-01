@@ -14,17 +14,33 @@ packages.list <- c("haven", "gvlma", "tidyr", "Rmisc")
 from.csv <- read.csv("data.csv",header=T,sep=",")
 from.sav <- read_sav("data.sav")
 
-clean <- na.omit(from.sav)
-clean.data <- as.data.frame(na.omit(from.csv))
+clean<- as.data.frame(na.omit(from.csv))
+clean <- as.data.frame(na.omit(from.sav))
+clean<-from.csv
+clean[is.na(clean)]<-0
 
-L <- list("watch_wd","watch_wd_sq","watch_we", "watch_we_sq", "play_wd", "play_wd_sq", "play_we", "play_we_sq", "sp_wd", "sp_wd_sq", "sp_we", "sp_wd_sq", "comp_wd", "comp_wd_sq","comp_we","comp_we_sq")
+L <- list("watch_wd","watch_wd_sq","watch_we", "watch_we_sq", "play_wd", "play_wd_sq", "play_we", "play_we_sq", "comp_wd", "comp_wd_sq","comp_we", "comp_we_sq", "sp_wd", "sp_wd_sq", "sp_we", "sp_we_sq")
+
+l <- list("watch_wd","watch_we", "play_wd", "play_we", "comp_wd", "comp_we", "sp_wd", "sp_we")
+
+c<-clean
+
+c$Ethnicg[c$Ethnicg==1]<-10
+c$Ethnicg[c$Ethnicg==3]<-1
+c$Ethnicg[c$Ethnicg==10]<-3
+
+
+for (i in 1:length(l)){
+  print(round(row.maker(model.maker(clean,l[i], add.gender=T, add.ethnic=T, add.ses=T, agg.vars = T)),10))
+}
+
 
 cnames<-colnames(clean)
 
 uncontrolled.models <- list(NA)
 
 for (i in 1:(length(L)/2)){
- 
+
   c1 <- match(L[2*i-1],cnames)
   c2 <- match(L[2*i],cnames)
   
@@ -32,6 +48,8 @@ for (i in 1:(length(L)/2)){
   quad.comp <- as.numeric(unlist(clean[,c2]))
   
   uncontrolled.models[[i]] <- lm(clean$mwbi ~  lin.comp + quad.comp)
+  l <- lm(clean$mwbi ~ lin.comp)
+  q <- lm(clean$mwbi ~ quad.comp)
 }
 
 
@@ -42,8 +60,8 @@ for (i in 1:(length(L)/2)){
 week.days <- c("watch_wd", "play_wd", "sp_wd", "comp_wd")
 week.ends <- c("watch_we", "play_we", "sp_we", "comp_we")
 
-clean.wide <- clean
-clean.wide$Serial <- factor(clean.wide$Serial)
+clean.wide <- clean#.data
+clean.wide[,1] <- factor(clean.wide[,1])
 
 clean.long <- gather(clean.wide, device, wd.hours, week.days, factor_key=TRUE)
 clean.long <- gather(clean.long, device, we.hours, week.ends, factor_key=TRUE)
@@ -53,8 +71,7 @@ summary.clean.wd <- summarySE(data=clean.long, measurevar = "wd.hours", groupvar
 
 summa.wide.wd <- summarySE(data=clean.long, measurevar = week.days, groupvars = "Genderg")
 
-
-  summ <- ci.mean(we.hours~Genderg+device,data=clean.long)
+summ <- ci.mean(we.hours~Genderg+device,data=clean.long)
 
 summary.clean.we <- summarySE(data=clean.long, measurevar = "we.hours", groupvars = c("device","Genderg"))
 
@@ -62,6 +79,12 @@ tgc2 <- summary.clean.wd
 tgc2$device <- factor(tgc2$device)
 tgc2$Genderg <- factor(tgc2$Genderg)
 
+
+cg1<-subset(clean,Genderg==1)
+cg2<-subset(clean,Genderg==2)
+
+cg1.long <- gather(cg1, device, wd.hours, week.days, factor_key=TRUE)
+sum1 <- 
 
 ggplot(tgc2, aes(x=device, y=wd.hours, fill=Genderg)) + 
     geom_bar(position=position_dodge(), stat="identity") +
@@ -80,12 +103,31 @@ ggplot(summary.clean.wd, aes(x=device, y=wd.hours, fill=Genderg)) +
 
 ```
 
+```{r ploting the data eith p values}
+
+ggbarplot(clean.long, x = "device", y = "hours", add = "mean_se",
+          color = "Genderg", palette = "jco", 
+          position = position_dodge(0.8))+
+  stat_compare_means(aes(group = Genderg), label = "p.signif", label.y = 29)
+
+```
+
 ``` {r sketch board of codes}
 
 #  To use higher ordder linear models
 #  fit.quad <- gvlma(weight~poly(dayTime,2,raw=TRUE), data=new.data)
 
 ```
+
+
+SP_we CI's are different
+mwb: they used
+mwbi: didn't use
+$$\hat{\lambda}_{MLE} = \bar{x} = `r df.sqrt`$$
+
+library(DataExplorer)
+create_report(clean)
+use `kable`
 
 Look up the tutorial on potting by ggplot [Plotting means and error bars (ggplot2)](http://www.cookbook-r.com/Graphs/Plotting_means_and_error_bars_(ggplot2))
 
