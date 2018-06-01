@@ -1,6 +1,6 @@
 
 
-#clean <- na.omit(data)
+clean <- na.omit(data)
 
 watch_wd <- clean$watch_wd
 watch_wd_sq <- clean$watch_wd_sq
@@ -60,6 +60,7 @@ for (i in 1:(length(L)/2)){
   controlled.models[[i]] <- lm(clean$mwb ~  lin.comp + quad.comp + clean$Genderg + clean$Ethnicg + clean$IMD3)
   
   }
+
     #Creating Table for uncontrolled models
 Table1 <- matrix(nrow = length(L), ncol = 6)
 
@@ -131,3 +132,29 @@ models.uncontrolled <- Table1
 
 View(models.uncontrolled)
 View(models.controlled)
+
+
+#Comparing Uncontrolled linear vs linear+quadratic Models
+
+
+## Comparing
+controlled.models.linear <- list(NA)
+controlled.models.quad <- list(NA)
+degree.model <- list(NA)
+calc.bic <- data.frame(NA)
+
+for (i in 1:(length(L)/2)){
+  #i<-4
+  c3 <- match(L[2*i-1],cnames)
+  c4 <- match(L[2*i],cnames)
+  
+  lin.comp <- as.numeric(unlist(clean[,c3]))
+  quad.comp <- as.numeric(unlist(clean[,c4]))
+  
+  controlled.models.linear[[i]] <- lm(clean$mwbi ~  lin.comp)
+  controlled.models.quad[[i]] <- lm(clean$mwbi ~ quad.comp)
+  calc.bic <- BIC(controlled.models.linear[[i]], controlled.models.quad[[i]])
+  degree.model[i] <- which.min(calc.bic$BIC)
+}
+
+## degree model gives the best model
