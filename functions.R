@@ -33,7 +33,6 @@ model.maker <- function(data, variable.name, add.gender=F, add.ethnic=F, add.ses
   if (add.gender==F & add.ethnic==F & add.ses==T){
     model <- lm(data$mwb ~ lin.comp + quad.comp + ses.comp)}
 
-  L <- list("watch_wd","watch_wd_sq","watch_we", "watch_we_sq", "play_wd", "play_wd_sq", "play_we", "play_we_sq", "comp_wd", "comp_wd_sq","comp_we", "comp_we_sq", "sp_wd", "sp_wd_sq", "sp_we", "sp_we_sq")
   return(model)
 }
 
@@ -42,7 +41,7 @@ dimnames <- list(time=c("linear","quadratic"), name=c(1:6))
 mat <- matrix(data, ncol=6, nrow=2, dimnames=dimnames)
 as.data.frame((mat))
 
-table.maker <- function (model){
+row.maker <- function (model){
   
   table <- matrix(nrow = 2, ncol = 6)
   
@@ -73,6 +72,27 @@ table.maker <- function (model){
   
   return(table)
 
+}
+
+table.maker <- function(data, add.gender=F, add.ethnic=F, add.ses=F, agg.vars=F, digits = 2){
+  
+  table <- NULL
+  rows.tmp <- NULL
+  l <- list("watch_wd","watch_we", "play_wd", "play_we", "comp_wd", "comp_we", "sp_wd", "sp_we")
+  activities <- list("Watch Weekday", "Watch Weekend", "Play Weekday", "Play Weekend", "Computer Weekday", "Computer Weekend", "Smatphone Weekday", "Smatphone Weekend")
+  
+  for(i in 1:length(l)){
+    rows.tmp <- round(row.maker(model.maker(data,l[i], add.gender=add.gender, add.ethnic=add.ethnic, add.ses=add.ses, agg.vars = agg.vars)),digits)
+    table <- rbind(table, rows.tmp)
+  }
+  
+  for(i in 1:length(activities)){
+    rownames(table)[2*i-1]<-paste(activities[i],"Linear")
+    rownames(table)[2*i]<-paste(activities[i],"Quadratic")
+  }
+ 
+  return(table)
+  
 }
 
 concise <- function (model){

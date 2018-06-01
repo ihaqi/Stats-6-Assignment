@@ -31,7 +31,7 @@ c$Ethnicg[c$Ethnicg==10]<-3
 
 
 for (i in 1:length(l)){
-  print(round(table.maker(model.maker(clean,l[i], add.gender=T, add.ethnic=T, add.ses=T, agg.vars = T)),10))
+  print(round(row.maker(model.maker(clean,l[i], add.gender=T, add.ethnic=T, add.ses=T, agg.vars = T)),10))
 }
 
 
