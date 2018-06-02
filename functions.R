@@ -95,14 +95,14 @@ table.maker <- function(data, add.gender=F, add.ethnic=F, add.ses=F, agg.vars=F,
   
 }
 
-recoder <- function(data, ethnic.code = c(0,1,1,1,1), depr.code = c(0,1,1)){
+recoder <- function(data, minority.code = c(0,1,1,1,1), depr.code = c(0,1,1)){
   
   # re-coding ethnicity
-  data$minority[data$Ethnicg==1] <- ethnic.code[1] # Whites
-  data$minority[data$Ethnicg==2] <- ethnic.code[2] # Mixed / multiple ethnic groups
-  data$minority[data$Ethnicg==3] <- ethnic.code[3] # Asian / Asian British
-  data$minority[data$Ethnicg==4] <- ethnic.code[4] # Black / African / Caribbean / Black British
-  data$minority[data$Ethnicg==5] <- ethnic.code[5] # Other ethnic group
+  data$minority[data$Ethnicg==1] <- minority.code[1] # Whites
+  data$minority[data$Ethnicg==2] <- minority.code[2] # Mixed / multiple ethnic groups
+  data$minority[data$Ethnicg==3] <- minority.code[3] # Asian / Asian British
+  data$minority[data$Ethnicg==4] <- minority.code[4] # Black / African / Caribbean / Black British
+  data$minority[data$Ethnicg==5] <- minority.code[5] # Other ethnic group
   
   # re-coding deprivation
   data$deprived[data$IMD3==1] <- depr.code[1] # lower IMD3 quantiles
