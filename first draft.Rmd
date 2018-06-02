@@ -103,7 +103,7 @@ ggplot(summary.clean.wd, aes(x=device, y=wd.hours, fill=Genderg)) +
 
 ```
 
-```{r ploting the data eith p values}
+```{r ploting the data with p values}
 
 ggbarplot(clean.long, x = "device", y = "hours", add = "mean_se",
           color = "Genderg", palette = "jco", 
@@ -111,6 +111,8 @@ ggbarplot(clean.long, x = "device", y = "hours", add = "mean_se",
   stat_compare_means(aes(group = Genderg), label = "p.signif", label.y = 29)
 
 ```
+
+
 
 ``` {r sketch board of codes}
 
