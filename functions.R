@@ -95,6 +95,24 @@ table.maker <- function(data, add.gender=F, add.ethnic=F, add.ses=F, agg.vars=F,
   
 }
 
+recoder <- function(data, ethnic.code = c(0,1,1,1,1), depr.code = c(0,1,1)){
+  
+  # re-coding ethnicity
+  data$minority[data$Ethnicg==1] <- ethnic.code[1] # Whites
+  data$minority[data$Ethnicg==2] <- ethnic.code[2] # Mixed / multiple ethnic groups
+  data$minority[data$Ethnicg==3] <- ethnic.code[3] # Asian / Asian British
+  data$minority[data$Ethnicg==4] <- ethnic.code[4] # Black / African / Caribbean / Black British
+  data$minority[data$Ethnicg==5] <- ethnic.code[5] # Other ethnic group
+  
+  # re-coding deprivation
+  data$deprived[data$IMD3==1] <- depr.code[1] # lower IMD3 quantiles
+  data$deprived[data$IMD3==2] <- depr.code[2] # middle IMD3 quantiles
+  data$deprived[data$IMD3==3] <- depr.code[3] # higher IMD3 quantiles
+  
+  return(data)
+  
+}
+
 concise <- function (model){
   
   p.values <- summary(model)$coefficients[,4]
@@ -104,4 +122,3 @@ concise <- function (model){
   
 }
 
-#data.driver <- function(data,)
