@@ -1,0 +1,274 @@
+---
+title             : "Assigment Statistics 6"
+shorttitle        : "Title"
+
+author: 
+  - name          : "Gustavo Villca Ponce"
+    affiliation   : "1"
+    corresponding : yes    # Define only one corresponding author
+    address       : "Postal address"
+    email         : "my@email.com"
+  - name          : "Ernst-August Doelle"
+    affiliation   : "1,2"
+  
+affiliation:
+  - id            : "1"
+    institution   : "Wilhelm-Wundt-University"
+  - id            : "2"
+    institution   : "Konstanz Business School"
+
+author_note: |
+  Add complete departmental affiliations for each author here. Each new line herein must be indented, like this line.
+
+  Enter author note here.
+
+abstract: |
+  Enter abstract here. Each new line herein must be indented, like this line.
+  
+keywords          : "Blood and tears"
+wordcount         : "X"
+
+bibliography      : ["r-references.bib"]
+
+figsintext        : no
+figurelist        : no
+tablelist         : no
+footnotelist      : no
+lineno            : yes
+mask              : no
+
+class             : "man"
+output            : papaja::apa6_pdf
+---
+
+```{r load_packages and set-up, include = FALSE}
+library("papaja")
+
+knitr::opts_chunk$set( echo = F , include = F)
+```
+## Introducion 
+
+This is a statistical report, based on (add citation) for the class of _Statistics VI (Seminar on statistical analyses of psychological research data) [P0Q01a]_. As required by the guidelines of this project, this report will consist of three main parts, in which we will try to 1)Check the reproducibility status of the published results
+, 2)Check the robustness status of the confirmatory analyses and 3) Check the pre-registration status of the published results by comparing the pre-registered protocol to the published paper. 
+```{r loding_data}
+
+from.csv <- read.csv("data.csv",header=T,sep=",")
+
+clean<- as.data.frame(na.omit(from.csv))
+```
+
+```{r Fuctions for report}
+
+model.maker <- function(data, variable.name, add.gender=F, add.ethnic=F, add.ses=F, agg.vars=F){
+  #  L <- list("watch_wd","watch_wd_sq","watch_we", "watch_we_sq", "play_wd", "play_wd_sq", "play_we", "play_we_sq", "sp_wd", "sp_wd_sq", "sp_we", "sp_wd_sq", "comp_wd", "comp_wd_sq","comp_we","comp_we_sq")
+  cnames <- colnames(data)
+  name.no1 <- match(variable.name,cnames)
+  name.no2 <- match(paste(variable.name,"_sq", sep=""),cnames)
+  lin.comp <- as.numeric(unlist(data[,name.no1]))
+  quad.comp <- as.numeric(unlist(data[,name.no2]))
+  
+  
+  gender.comp <- data$male
+  ethnic.comp <- data$minority
+  ses.comp <- data$deprived
+  
+  if(agg.vars){
+    gender.comp <- data$Genderg
+    ethnic.comp <- data$Ethnicg
+    ses.comp <- data$IMD3
+  }
+  
+  model <- lm(data$mwb ~ lin.comp + quad.comp)
+  if (add.gender==T & add.ethnic==T & add.ses==T){
+    model <- lm(data$mwb ~ lin.comp + quad.comp + gender.comp + ethnic.comp + ses.comp)}
+  if (add.gender==T & add.ethnic==T & add.ses==F){
+    model <- lm(data$mwb ~ lin.comp + quad.comp + gender.comp + ethnic.comp)}
+  if (add.gender==T & add.ethnic==F & add.ses==T){
+    model <- lm(data$mwb ~ lin.comp + quad.comp + gender.comp + ses.comp)}
+  if (add.gender==T & add.ethnic==F & add.ses==F){
+    model <- lm(data$mwb ~ lin.comp + quad.comp + gender.comp)}
+  if (add.gender==F & add.ethnic==T & add.ses==T){
+    model <- lm(data$mwb ~ lin.comp + quad.comp + ethnic.comp + ses.comp)}
+  if (add.gender==F & add.ethnic==T & add.ses==F){
+    model <- lm(data$mwb ~ lin.comp + quad.comp + ethnic.comp)}
+  if (add.gender==F & add.ethnic==F & add.ses==T){
+    model <- lm(data$mwb ~ lin.comp + quad.comp + ses.comp)}
+  
+  return(model)
+} #Fuction to make quadratic models
+
+data <- c(1:12)
+dimnames <- list(time=c("linear","quadratic"), name=c(1:6))
+mat <- matrix(data, ncol=6, nrow=2, dimnames=dimnames)
+as.data.frame((mat))
+
+row.maker <- function (model){
+  
+  table <- matrix(nrow = 2, ncol = 6)
+  
+  Columns <-c("b", "SE", "CI(2.5%)", "CI(97.5%)", "p", "d")
+  colnames(table) <- Columns
+  rownames(table) <- c("linear","quadratic")
+  
+  out <- summary(model)
+  coefs <- coef(model)
+  confints <- confint(model)
+  
+  df.sqrt <- sqrt(model$df)
+  cohens.d.lin <- 2*abs(summary(model)$coefficients[2,3]/df.sqrt)
+  cohens.d.quad <- 2*abs(summary(model)$coefficients[3,3]/df.sqrt)
+  
+  table[1,1] <- coefs[2]
+  table[2,1] <- coefs[3]
+  table[1, 2] <- out$coefficients[2,2]
+  table[2,2] <- out$coefficients[3,2]
+  table[1,3] <- confints[2,1] #2.5% part of linear model CI
+  table[2,3] <- confints[3,1] #2,5% part of quadratic model CI
+  table[1,4] <- confints[2,2] #97.5% part of linear model CI
+  table[2,4] <- confints[3,2] #97.5% part of quadratic model CI
+  table[1,5] <- out$coefficients[2,4] #p values, should be made nicer by replacing small values with "<.005)
+  table[2,5] <- out$coefficients[3,4]
+  table[1,6] <- cohens.d.lin
+  table[2,6] <- cohens.d.quad
+  
+  return(table)
+  
+}
+
+table.maker <- function(data, add.gender=F, add.ethnic=F, add.ses=F, agg.vars=F, digits = 2){
+  
+  table <- NULL
+  rows.tmp <- NULL
+  l <- list("watch_wd","watch_we", "play_wd", "play_we", "comp_wd", "comp_we", "sp_wd", "sp_we")
+  activities <- list("Watch Weekday", "Watch Weekend", "Play Weekday", "Play Weekend", "Computer Weekday", "Computer Weekend", "Smatphone Weekday", "Smatphone Weekend")
+  
+  for(i in 1:length(l)){
+    rows.tmp <- round(row.maker(model.maker(data,l[i], add.gender=add.gender, add.ethnic=add.ethnic, add.ses=add.ses, agg.vars = agg.vars)),digits)
+    table <- rbind(table, rows.tmp)
+  }
+  
+  for(i in 1:length(activities)){
+    rownames(table)[2*i-1]<-paste(activities[i],"Linear")
+    rownames(table)[2*i]<-paste(activities[i],"Quadratic")
+  }
+  
+  return(table)
+  
+} #Function to make tables with all the important statistics
+
+concise <- function (model){
+  
+  p.values <- summary(model)$coefficients[,4]
+  effect.sizes <- 2*abs(summary(model)$coefficients[,3]/sqrt(model$df))
+  
+  return(data.frame(p.values,effect.sizes))
+  
+} #Function for P-values and effect-size's
+
+```
+
+
+## Reproducibility
+```{r BIC }
+
+
+```
+### Exploratory analysis
+To begin the replication portion of this report, we start by exploring the possibility of a monotonic relationship between digital screen-time and mental well-being  as described by Przybylski and Weinstein (2017), We achieve this my making use of the Besyan Information Criterion (BIC) and comparing the simple linear models of all variables concerning digital screen-time with their simple and quadratic counterparts. We found that for the models that controlled for confounding variables, the fit was greater for the models with both a linear and quadratic component. For the unadjusted models, we found one model of which the BIC index favoured a linear model alone. Specifically, for smartphone use during weekdays ( see, Przybylski & Weinstein (2017), figure 1).
+
+### Confirmatory analysis 
+```{r table making }
+table.uncontrolled <-print(table.maker(clean, add.gender=F, add.ethnic=F, add.ses=F, agg.vars = T, digits=2))
+table.controlled <-print(table.maker(clean, add.gender=T, add.ethnic=T, add.ses=T, agg.vars = T, digits=2))
+
+
+```
+
+Following the steps described by the authors we start the exploratory data analysis by creating quadratic models of all four types of digital activities consisting of both linear and of non-linear components, next we extracted all the important value( _SD_, _P_-values, _β_, Confidence intervals and Cohen’s _d_)    out of the models and created two tables , the first table contains the outcome of the models without taking into account the control variables described in the paper, namely gender ,ethnicity and Socio Economical Status. The second table contains the outcomes of the models with the control variables (See tables below)
+`r kable(table.uncontrolled)`
+`r kable(table.controlled)`
+
+```{r Examples }
+example1 <- table.uncontrolled[1, 1]
+example2 <- table.uncontrolled[5, 2]
+example3 <- table.uncontrolled[5, 6]
+example4 <- table.controlled[5, 1]
+```
+
+###Reproducibility analysis
+Although we were able to extract all the important statistics from the raw data without too many issues, notice that some of our values are different from those reported in Przybylski and Weinstein (2017). Specifically, we noticed two types of differences in both tables , the first type are small one decimal differences, for example, in our replication of their analysis we obtain a β value of _β_ =`r example1` for the linear component of the variable “watching films and tv programs in weekdays”, whereas in their paper the authors reports  a value of _β_=.98, we see this occur not only for β but for other values too, such as the standard deviation of the linear component of the variable “time spent playing games” (our _SD_=`r example2` vs their  _SD_=.11 ), in the same model we obtain a _|d|_ value of `r example3`, compared to their _|d|_ value of 19. These small one decimal differences can be found in both tables, a potential explanation would be a differences in the rounding of the number. This explanation becomes less likely, however, once we take onto account the second type of difference we encountered. We found decimal differences exceeding one decimal, for example, in table 2 we observe a _ β_=`r example4` for the linear component of “playing games in the weekdays” vs  _β_=.21 reported in the paper. These multi-decimal differences can’t be explain fully by a rounding difference of the decimals. In order to find the origin of the different outputs, we looked into the data used by the authors for their SSPS analysis. We noticed a difference in the amount of missing values(NA) between the raw data and the data used in their SSPS analysis, which will be elaborated on in the preregistration section. 
+It is likely that the researcher handled the missing values in a  way that wasn’t reported in the paper, making it hard for us to fully replicate the results without any differences. Furthermore, the way the variables were coded in an ambiguous manner, making it difficult to determine which specific variables were used in the models reported by the researchers. Overall, there was a lack of clarity in crucial data processing steps such as missing values and variable identification. 
+
+
+###Preregistration
+```{r read_data, include=FALSE}
+clean2 <- na.omit(read_sav(file = "data.sav"))
+clean <- na.omit(read.csv("data.csv"))
+data2 <- read_sav(file = "data.sav")
+data <- read.csv("data.csv")
+```
+The data were acquired according to the specifications made by the authors in the preregistration document. However, in the technical report on their OSF page, the authors said to use a 3% margin of error at the 95%CI to estimate sample size. In the published paper, the authors report a 0.3% margin of error, arriving at the same estimate of sample size (N = 298,080. Furthermore, The authors reported a total n of 120,115 participants with usable data. When we attempted to replicate their analyses, we met with a further reduction of n to `r nrow(clean)`. This is not reported anywhere in the published article. Finally, the two data documents provided by the authors differ in the amount of NA data they contain. Where the .csv file contains `r nrow(data)-nrow(clean)` rows with missing values, the .sav file contains `r nrow(data2)-nrow(clean2)` rows with missing values. None of these inconsistencies were reported by the authors in the final paper, and it is unclear which data set the authors ultimately used in their analysis. The fact that the data are ambiguous is a major obstacle for replication analyses.
+```{r BIC analysis, include=False}
+## Comparing
+uncontrolled.models.linear <- list(NA)
+uncontrolled.models.quad <- list(NA)
+degree.model.uncontrolled <- list(NA)
+calc.bic.unctrl <- data.frame(NA)
+
+for (i in 1:(length(L)/2)){
+  #i<-4
+  c3 <- match(L[2*i-1],cnames)
+  c4 <- match(L[2*i],cnames)
+  
+  lin.comp <- as.numeric(unlist(clean[,c3]))
+  quad.comp <- as.numeric(unlist(clean[,c4]))
+  
+  uncontrolled.models.linear[[i]] <- lm(clean$mwbi ~  lin.comp)
+  uncontrolled.models.quad[[i]] <- lm(clean$mwbi ~ lin.comp + quad.comp)
+  calc.bic.unctrl <- BIC(uncontrolled.models.linear[[i]], uncontrolled.models.quad[[i]])
+  degree.model.uncontrolled[i] <- which.min(calc.bic.unctrl$BIC)
+}
+
+#Comparing controlled linear vs linear+quadratic models
+
+controlled.models.linear <- list(NA)
+controlled.models.quad <- list(NA)
+degree.model.controlled <- list(NA)
+calc.bic.ctrl <- data.frame(NA)
+
+for (i in 1:(length(L)/2)){
+  #i<-4
+  c3 <- match(L[2*i-1],cnames)
+  c4 <- match(L[2*i],cnames)
+  
+  lin.comp <- as.numeric(unlist(clean[,c3]))
+  quad.comp <- as.numeric(unlist(clean[,c4]))
+  
+  controlled.models.linear[[i]] <- lm(clean$mwbi ~  lin.comp + clean$male + clean$minority + clean$deprived)
+  controlled.models.quad[[i]] <- lm(clean$mwbi ~ lin.comp + quad.comp + clean$male + clean$minority + clean$deprived)
+  calc.bic.ctrl <- BIC(controlled.models.linear[[i]], controlled.models.quad[[i]])
+  degree.model.controlled[i] <- which.min(calc.bic.ctrl$BIC)
+}
+
+
+```
+
+The preregistration document stated that testing the displacement hypothesis was to be done by linear regression modelling, predicting mental well-being through composite scores of screen time. The authors did not conduct these analyses. They explain that ‘Interocular’ tests were sufficient to exclude this hypothesis. Although we only found one unadjusted model for which the BIC criterum favours a purely linear model, this does allow one to question why the authors refrained from the formal hypothesis test detailed in the preregistration document. 
+
+The authors ignored the measure of summed screen time which they included in their preregistration document. The authors reported this accordingly, although our above analysis allows the questionability of their deviation on this point.
+Finally, the authors did not concretely specify what particular coding they intended to use for the control variables of ‘whether living in a deprived area’, and ‘whether black and minority ethnicity’. While the conditionality of the term ‘whether’ implies binary coding, the subsequent reference to the specific questions would also allow one to assume that the authors used the values from those questions. This is relevant because other codings of these variables are also present in the data. 
+Although this is a minor issue, a more clear issue is also present. The authors noted in their deviations from analysis plan that the preregistered control variables of ‘whether parents married’ and ‘whether native born’, they did not include the omission of these variables in the published article. 
+
+\newpage
+
+# References
+```{r create_r-references}
+r_refs(file = "r-references.bib")
+```
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+<div id = "refs"></div>
+\endgroup
