@@ -1,0 +1,314 @@
+\documentclass[man]{apa6}
+
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+    \usepackage{xltxtra,xunicode}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
+  \newcommand{\euro}{€}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{\usepackage{microtype}}{}
+
+% Table formatting
+\usepackage{longtable, booktabs}
+\usepackage{lscape}
+% \usepackage[counterclockwise]{rotating}   % Landscape page setup for large tables
+\usepackage{multirow}		% Table styling
+\usepackage{tabularx}		% Control Column width
+\usepackage[flushleft]{threeparttable}	% Allows for three part tables with a specified notes section
+\usepackage{threeparttablex}            % Lets threeparttable work with longtable
+
+% Create new environments so endfloat can handle them
+% \newenvironment{ltable}
+%   {\begin{landscape}\begin{center}\begin{threeparttable}}
+%   {\end{threeparttable}\end{center}\end{landscape}}
+
+\newenvironment{lltable}
+  {\begin{landscape}\begin{center}\begin{ThreePartTable}}
+  {\end{ThreePartTable}\end{center}\end{landscape}}
+
+  \usepackage{ifthen} % Only add declarations when endfloat package is loaded
+  \ifthenelse{\equal{\string man}{\string man}}{%
+   \DeclareDelayedFloatFlavor{ThreePartTable}{table} % Make endfloat play with longtable
+   % \DeclareDelayedFloatFlavor{ltable}{table} % Make endfloat play with lscape
+   \DeclareDelayedFloatFlavor{lltable}{table} % Make endfloat play with lscape & longtable
+  }{}%
+
+
+
+% The following enables adjusting longtable caption width to table width
+% Solution found at http://golatex.de/longtable-mit-caption-so-breit-wie-die-tabelle-t15767.html
+\makeatletter
+\newcommand\LastLTentrywidth{1em}
+\newlength\longtablewidth
+\setlength{\longtablewidth}{1in}
+\newcommand\getlongtablewidth{%
+ \begingroup
+  \ifcsname LT@\roman{LT@tables}\endcsname
+  \global\longtablewidth=0pt
+  \renewcommand\LT@entry[2]{\global\advance\longtablewidth by ##2\relax\gdef\LastLTentrywidth{##2}}%
+  \@nameuse{LT@\roman{LT@tables}}%
+  \fi
+\endgroup}
+
+
+\ifxetex
+  \usepackage[setpagesize=false, % page size defined by xetex
+              unicode=false, % unicode breaks when used with xetex
+              xetex]{hyperref}
+\else
+  \usepackage[unicode=true]{hyperref}
+\fi
+\hypersetup{breaklinks=true,
+            pdfauthor={},
+            pdftitle={Assigment Statistics 6},
+            colorlinks=true,
+            citecolor=blue,
+            urlcolor=blue,
+            linkcolor=black,
+            pdfborder={0 0 0}}
+\urlstyle{same}  % don't use monospace font for urls
+
+\setlength{\parindent}{0pt}
+%\setlength{\parskip}{0pt plus 0pt minus 0pt}
+
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+
+
+% Manuscript styling
+\captionsetup{font=singlespacing,justification=justified}
+\usepackage{csquotes}
+\usepackage{upgreek}
+
+ % Line numbering
+  \usepackage{lineno}
+  \linenumbers
+
+
+\usepackage{tikz} % Variable definition to generate author note
+
+% fix for \tightlist problem in pandoc 1.14
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% Essential manuscript parts
+  \title{Assigment Statistics 6}
+
+  \shorttitle{Title}
+
+
+  \author{Gustavo Villca Ponce\textsuperscript{1}~\& Ernst-August Doelle\textsuperscript{1,2}}
+
+  % \def\affdep{{"", ""}}%
+  % \def\affcity{{"", ""}}%
+
+  \affiliation{
+    \vspace{0.5cm}
+          \textsuperscript{1} Wilhelm-Wundt-University\\
+          \textsuperscript{2} Konstanz Business School  }
+
+  \authornote{
+    Add complete departmental affiliations for each author here. Each new
+    line herein must be indented, like this line.
+    
+    Enter author note here.
+    
+    Correspondence concerning this article should be addressed to Gustavo
+    Villca Ponce, Postal address. E-mail:
+    \href{mailto:my@email.com}{\nolinkurl{my@email.com}}
+  }
+
+
+  \abstract{Enter abstract here. Each new line herein must be indented, like this
+line.}
+  \keywords{Blood and tears \\
+
+    \indent Word count: X
+  }
+
+
+
+
+
+\usepackage{amsthm}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}{Lemma}[section]
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{corollary}{Corollary}[section]
+\newtheorem{proposition}{Proposition}[section]
+\theoremstyle{definition}
+\newtheorem{example}{Example}[section]
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}[section]
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+\newtheorem*{solution}{Solution}
+\begin{document}
+
+\maketitle
+
+\setcounter{secnumdepth}{0}
+
+
+
+\#\#introducion
+
+This is a statistical report, based on (add citation) for the class of
+\emph{Statistics VI (Seminar on statistical analyses of psychological
+research data) {[}P0Q01a{]}}. As required by the guidelines of this
+project, this report will consist of three main parts, in which we will
+try to 1)Check the reproducibility status of the published results ,
+2)Check the robustness status of the confirmatory analyses and 3) Check
+the pre-registration status of the published results by comparing the
+pre-registered protocol to the published paper.
+
+\hypertarget{reproducibility}{%
+\subsection{Reproducibility}\label{reproducibility}}
+
+\hypertarget{exploratory-analysis}{%
+\subsubsection{Exploratory analysis}\label{exploratory-analysis}}
+
+To begin the replication portion of this report, we start by exploring
+the possibility of a monotonic relationship between digital screen-time
+and mental well-being as described by Przybylski and Weinstein (2017),We
+achieve this my making use of the Besyan Information Criterion (BIC) and
+comparing the simple linear models of all variables concerning digital
+screen-time with their quadratic counterparts. From these results ( add
+here ) we can suggest that a simple linear regression model would fit
+beter at least the variables of \enquote{time using computer} and
+\enquote{time using smartphone}. However, this is consistent with what
+is reported by Przybylski and Weinstein (2017), the authors claim that
+although a monotonic relationship could possibly be fitted onto the
+data, it would be very unsuitable, this can be confirmed by observing
+the plotted data presented by the researchers ( see, Przybylski \&
+Weinstein (2017), figure 1)
+
+\hypertarget{confirmatory-analysis}{%
+\subsubsection{Confirmatory analysis}\label{confirmatory-analysis}}
+
+\$\$\$\$
+
+Following the steps described by the authors we start the exploratory
+data analysis by creating quadratic models of all four types of digital
+activities consisting of both linear and of non-linear components, next
+we extracted all the important value( \emph{SD}, \emph{P}-values,
+\emph{ß1}, Confidence intervals and Cohen's \emph{d}) out of the models
+and created two tables , the first table contains the outcome of the
+models without taking into account the control variables described in
+the paper, namely gender ,ethnicity and Socio Economical Status. The
+second table contains the outcomes of the models with the control
+variables (See tables below)
+
+\begin{tabular}{l|r|r|r|r|r|r}
+\hline
+  & b & SE & CI(2.5\%) & CI(97.5\%) & p & d\\
+\hline
+Watch Weekday Linear & 0.99 & 0.10 & 0.79 & 1.20 & 0.00 & 0.06\\
+\hline
+Watch Weekday Quadratic & -0.14 & 0.01 & -0.16 & -0.12 & 0.00 & 0.09\\
+\hline
+Watch Weekend Linear & 1.55 & 0.10 & 1.36 & 1.74 & 0.00 & 0.10\\
+\hline
+Watch Weekend Quadratic & -0.17 & 0.01 & -0.18 & -0.15 & 0.00 & 0.13\\
+\hline
+Play Weekday Linear & 3.71 & 0.12 & 3.47 & 3.95 & 0.00 & 0.20\\
+\hline
+Play Weekday Quadratic & -0.34 & 0.01 & -0.37 & -0.32 & 0.00 & 0.18\\
+\hline
+Play Weekend Linear & 3.20 & 0.09 & 3.03 & 3.38 & 0.00 & 0.22\\
+\hline
+Play Weekend Quadratic & -0.27 & 0.01 & -0.28 & -0.25 & 0.00 & 0.20\\
+\hline
+Computer Weekday Linear & 1.32 & 0.10 & 1.11 & 1.52 & 0.00 & 0.08\\
+\hline
+Computer Weekday Quadratic & -0.17 & 0.01 & -0.19 & -0.15 & 0.00 & 0.11\\
+\hline
+Computer Weekend Linear & 1.60 & 0.09 & 1.42 & 1.78 & 0.00 & 0.11\\
+\hline
+Computer Weekend Quadratic & -0.18 & 0.01 & -0.19 & -0.16 & 0.00 & 0.14\\
+\hline
+Smatphone Weekday Linear & -0.56 & 0.09 & -0.73 & -0.40 & 0.00 & 0.04\\
+\hline
+Smatphone Weekday Quadratic & -0.01 & 0.01 & -0.03 & 0.00 & 0.11 & 0.01\\
+\hline
+Smatphone Weekend Linear & 0.46 & 0.08 & 0.29 & 0.62 & 0.00 & 0.03\\
+\hline
+Smatphone Weekend Quadratic & -0.10 & 0.01 & -0.11 & -0.08 & 0.00 & 0.08\\
+\hline
+\end{tabular}
+
+\begin{tabular}{l|r|r|r|r|r|r}
+\hline
+  & b & SE & CI(2.5\%) & CI(97.5\%) & p & d\\
+\hline
+Watch Weekday Linear & 0.99 & 0.10 & 0.79 & 1.20 & 0.00 & 0.06\\
+\hline
+Watch Weekday Quadratic & -0.14 & 0.01 & -0.16 & -0.12 & 0.00 & 0.09\\
+\hline
+Watch Weekend Linear & 1.55 & 0.10 & 1.36 & 1.74 & 0.00 & 0.10\\
+\hline
+Watch Weekend Quadratic & -0.17 & 0.01 & -0.18 & -0.15 & 0.00 & 0.13\\
+\hline
+Play Weekday Linear & 3.71 & 0.12 & 3.47 & 3.95 & 0.00 & 0.20\\
+\hline
+Play Weekday Quadratic & -0.34 & 0.01 & -0.37 & -0.32 & 0.00 & 0.18\\
+\hline
+Play Weekend Linear & 3.20 & 0.09 & 3.03 & 3.38 & 0.00 & 0.22\\
+\hline
+Play Weekend Quadratic & -0.27 & 0.01 & -0.28 & -0.25 & 0.00 & 0.20\\
+\hline
+Computer Weekday Linear & 1.32 & 0.10 & 1.11 & 1.52 & 0.00 & 0.08\\
+\hline
+Computer Weekday Quadratic & -0.17 & 0.01 & -0.19 & -0.15 & 0.00 & 0.11\\
+\hline
+Computer Weekend Linear & 1.60 & 0.09 & 1.42 & 1.78 & 0.00 & 0.11\\
+\hline
+Computer Weekend Quadratic & -0.18 & 0.01 & -0.19 & -0.16 & 0.00 & 0.14\\
+\hline
+Smatphone Weekday Linear & -0.56 & 0.09 & -0.73 & -0.40 & 0.00 & 0.04\\
+\hline
+Smatphone Weekday Quadratic & -0.01 & 0.01 & -0.03 & 0.00 & 0.11 & 0.01\\
+\hline
+Smatphone Weekend Linear & 0.46 & 0.08 & 0.29 & 0.62 & 0.00 & 0.03\\
+\hline
+Smatphone Weekend Quadratic & -0.10 & 0.01 & -0.11 & -0.08 & 0.00 & 0.08\\
+\hline
+\end{tabular}
+
+\#\#\#Reproducibility analysis Although we were able to extract all the
+important statistics out of the raw data without to many issues, notice
+that some of our values are different from those reported in Przybylski
+and Weinstein (2017). More specifically, we can see differences in
+
+\newpage
+
+\hypertarget{references}{%
+\section{References}\label{references}}
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+\hypertarget{refs}{}
+
+\endgroup
+
+
+
+
+
+
+\end{document}

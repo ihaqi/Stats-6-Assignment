@@ -1,0 +1,215 @@
+---
+title             : "Assigment Statistics 6"
+shorttitle        : "Title"
+
+author: 
+  - name          : "Gustavo Villca Ponce"
+    affiliation   : "1"
+    corresponding : yes    # Define only one corresponding author
+    address       : "Postal address"
+    email         : "my@email.com"
+  - name          : "Ernst-August Doelle"
+    affiliation   : "1,2"
+  
+affiliation:
+  - id            : "1"
+    institution   : "Wilhelm-Wundt-University"
+  - id            : "2"
+    institution   : "Konstanz Business School"
+
+author_note: |
+  Add complete departmental affiliations for each author here. Each new line herein must be indented, like this line.
+
+  Enter author note here.
+
+abstract: |
+  Enter abstract here. Each new line herein must be indented, like this line.
+  
+keywords          : "Blood and tears"
+wordcount         : "X"
+
+bibliography      : ["r-references.bib"]
+
+figsintext        : no
+figurelist        : no
+tablelist         : no
+footnotelist      : no
+lineno            : yes
+mask              : no
+
+class             : "man"
+output            : papaja::apa6_pdf
+---
+
+```{r load_packages and set-up, include = FALSE}
+library("papaja")
+
+knitr::opts_chunk$set( echo = F , include = F)
+```
+##introducion 
+
+This is a statistical report, based on (add citation) for the class of _Statistics VI (Seminar on statistical analyses of psychological research data) [P0Q01a]_. As required by the guidelines of this project, this report will consist of three main parts, in which we will try to 1)Check the reproducibility status of the published results
+, 2)Check the robustness status of the confirmatory analyses and 3) Check the pre-registration status of the published results by comparing the pre-registered protocol to the published paper. 
+```{r loding_data}
+
+from.csv <- read.csv("data.csv",header=T,sep=",")
+
+clean<- as.data.frame(na.omit(from.csv))
+```
+
+```{r Fuctions for report}
+
+model.maker <- function(data, variable.name, add.gender=F, add.ethnic=F, add.ses=F, agg.vars=F){
+  #  L <- list("watch_wd","watch_wd_sq","watch_we", "watch_we_sq", "play_wd", "play_wd_sq", "play_we", "play_we_sq", "sp_wd", "sp_wd_sq", "sp_we", "sp_wd_sq", "comp_wd", "comp_wd_sq","comp_we","comp_we_sq")
+  cnames <- colnames(data)
+  name.no1 <- match(variable.name,cnames)
+  name.no2 <- match(paste(variable.name,"_sq", sep=""),cnames)
+  lin.comp <- as.numeric(unlist(data[,name.no1]))
+  quad.comp <- as.numeric(unlist(data[,name.no2]))
+  
+  
+  gender.comp <- data$male
+  ethnic.comp <- data$minority
+  ses.comp <- data$deprived
+  
+  if(agg.vars){
+    gender.comp <- data$Genderg
+    ethnic.comp <- data$Ethnicg
+    ses.comp <- data$IMD3
+  }
+  
+  model <- lm(data$mwb ~ lin.comp + quad.comp)
+  if (add.gender==T & add.ethnic==T & add.ses==T){
+    model <- lm(data$mwb ~ lin.comp + quad.comp + gender.comp + ethnic.comp + ses.comp)}
+  if (add.gender==T & add.ethnic==T & add.ses==F){
+    model <- lm(data$mwb ~ lin.comp + quad.comp + gender.comp + ethnic.comp)}
+  if (add.gender==T & add.ethnic==F & add.ses==T){
+    model <- lm(data$mwb ~ lin.comp + quad.comp + gender.comp + ses.comp)}
+  if (add.gender==T & add.ethnic==F & add.ses==F){
+    model <- lm(data$mwb ~ lin.comp + quad.comp + gender.comp)}
+  if (add.gender==F & add.ethnic==T & add.ses==T){
+    model <- lm(data$mwb ~ lin.comp + quad.comp + ethnic.comp + ses.comp)}
+  if (add.gender==F & add.ethnic==T & add.ses==F){
+    model <- lm(data$mwb ~ lin.comp + quad.comp + ethnic.comp)}
+  if (add.gender==F & add.ethnic==F & add.ses==T){
+    model <- lm(data$mwb ~ lin.comp + quad.comp + ses.comp)}
+  
+  return(model)
+} #Fuction to make quadratic models
+
+data <- c(1:12)
+dimnames <- list(time=c("linear","quadratic"), name=c(1:6))
+mat <- matrix(data, ncol=6, nrow=2, dimnames=dimnames)
+as.data.frame((mat))
+
+row.maker <- function (model){
+  
+  table <- matrix(nrow = 2, ncol = 6)
+  
+  Columns <-c("b", "SE", "CI(2.5%)", "CI(97.5%)", "p", "d")
+  colnames(table) <- Columns
+  rownames(table) <- c("linear","quadratic")
+  
+  out <- summary(model)
+  coefs <- coef(model)
+  confints <- confint(model)
+  
+  df.sqrt <- sqrt(model$df)
+  cohens.d.lin <- 2*abs(summary(model)$coefficients[2,3]/df.sqrt)
+  cohens.d.quad <- 2*abs(summary(model)$coefficients[3,3]/df.sqrt)
+  
+  table[1,1] <- coefs[2]
+  table[2,1] <- coefs[3]
+  table[1, 2] <- out$coefficients[2,2]
+  table[2,2] <- out$coefficients[3,2]
+  table[1,3] <- confints[2,1] #2.5% part of linear model CI
+  table[2,3] <- confints[3,1] #2,5% part of quadratic model CI
+  table[1,4] <- confints[2,2] #97.5% part of linear model CI
+  table[2,4] <- confints[3,2] #97.5% part of quadratic model CI
+  table[1,5] <- out$coefficients[2,4] #p values, should be made nicer by replacing small values with "<.005)
+  table[2,5] <- out$coefficients[3,4]
+  table[1,6] <- cohens.d.lin
+  table[2,6] <- cohens.d.quad
+  
+  return(table)
+  
+}
+
+table.maker <- function(data, add.gender=F, add.ethnic=F, add.ses=F, agg.vars=F, digits = 2){
+  
+  table <- NULL
+  rows.tmp <- NULL
+  l <- list("watch_wd","watch_we", "play_wd", "play_we", "comp_wd", "comp_we", "sp_wd", "sp_we")
+  activities <- list("Watch Weekday", "Watch Weekend", "Play Weekday", "Play Weekend", "Computer Weekday", "Computer Weekend", "Smatphone Weekday", "Smatphone Weekend")
+  
+  for(i in 1:length(l)){
+    rows.tmp <- round(row.maker(model.maker(data,l[i], add.gender=add.gender, add.ethnic=add.ethnic, add.ses=add.ses, agg.vars = agg.vars)),digits)
+    table <- rbind(table, rows.tmp)
+  }
+  
+  for(i in 1:length(activities)){
+    rownames(table)[2*i-1]<-paste(activities[i],"Linear")
+    rownames(table)[2*i]<-paste(activities[i],"Quadratic")
+  }
+  
+  return(table)
+  
+} #Function to make tables with all the important statistics
+
+concise <- function (model){
+  
+  p.values <- summary(model)$coefficients[,4]
+  effect.sizes <- 2*abs(summary(model)$coefficients[,3]/sqrt(model$df))
+  
+  return(data.frame(p.values,effect.sizes))
+  
+} #Function for P-values and effect-size's
+
+```
+
+
+## Reproducibility
+```{r BIC }
+
+
+```
+### Exploratory analysis
+To begin the replication portion of this report, we start by exploring the possibility of a monotonic relationship between digital screen-time and mental well-being  as described by Przybylski and Weinstein (2017),We achieve this my making use of the Besyan Information Criterion (BIC) and comparing the simple linear models of all variables concerning digital screen-time with their quadratic counterparts. From these results ( add here ) we can suggest that a simple linear regression model would fit beter at least the variables of "time using computer" and "time using smartphone". However, this is consistent with what is reported by Przybylski and Weinstein (2017), the authors claim that although a monotonic relationship could possibly be fitted onto the data, it would be very unsuitable, this can be confirmed  by observing the plotted data presented by the researchers ( see, Przybylski & Weinstein (2017), figure 1)
+
+### Confirmatory analysis 
+```{r tablemaking}
+library(knitr)
+table.uncontrolled<-(table.maker(clean, add.gender=F, add.ethnic=F, add.ses=F, agg.vars = T, digits=2))
+table.controlled<-(table.maker(clean, add.gender=T, add.ethnic=T, add.ses=T, agg.vars = T, digits=2))
+apa_table(table.controlled, caption="Descriptive statistics of age by gender", note="A table note")
+
+
+```
+
+$$`r apa_table(table.controlled, caption="Descriptive statistics of age by gender", note="A table note")`$$
+
+Following the steps described by the authors we start the exploratory data analysis by creating quadratic models of all four types of digital activities consisting of both linear and of non-linear components, next we extracted all the important value( _SD_, _P_-values, _β1_, Confidence intervals and Cohen’s _d_)    out of the models and created two tables , the first table contains the outcome of the models without taking into account the control variables described in the paper, namely gender ,ethnicity and Socio Economical Status. The second table contains the outcomes of the models with the control variables (See tables below)
+
+`r kable(table.uncontrolled, format = 'latex')`
+`r kable(table.uncontrolled)`
+
+###Reproducibility analysis
+Although we were able to extract all the important statistics out of the raw data without to many issues, notice that some of our values are different from those reported in Przybylski and Weinstein (2017). More specifically, we can see differences in 
+
+
+
+
+
+\newpage
+
+# References
+```{r create_r-references}
+r_refs(file = "r-references.bib")
+```
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+<div id = "refs"></div>
+\endgroup
