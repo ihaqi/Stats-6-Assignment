@@ -29,9 +29,10 @@ c$Ethnicg[c$Ethnicg==1]<-10
 c$Ethnicg[c$Ethnicg==3]<-1
 c$Ethnicg[c$Ethnicg==10]<-3
 
-
+model.tmp <- NULL
 for (i in 1:length(l)){
-  print(round(row.maker(model.maker(clean,l[i], add.gender=T, add.ethnic=T, add.ses=T, agg.vars = T)),10))
+  m.tmp <- model.maker(clean,l[i], add.gender=T, add.ethnic=T, add.ses=T, agg.vars = T)
+  model.tmp <- append(model.tmp, m.tmp)
 }
 
 
