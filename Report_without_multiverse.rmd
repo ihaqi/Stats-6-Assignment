@@ -42,7 +42,13 @@ output            : papaja::apa6_pdf
 ---
 
 ```{r load_packages and set-up, include = FALSE}
-library("papaja")
+library(papaja)
+library(knitr)
+library(pacman)
+packages.list <- c("papaja", "knitr", "haven", "gvlma", "tidyr", "Rmisc")
+pacman::p_load(packages.list)
+#library("knitr")
+#knit2html("file.html")
 
 knitr::opts_chunk$set( echo = F , include = F)
 ```
@@ -202,13 +208,18 @@ It is likely that the researcher handled the missing values in a  way that wasnâ
 
 ###Preregistration
 ```{r read_data, include=FALSE}
-clean2 <- na.omit(read_sav(file = "data.sav"))
+clean2 <- na.omit(haven::read_sav(file = "data.sav"))
 clean <- na.omit(read.csv("data.csv"))
-data2 <- read_sav(file = "data.sav")
+data2 <- haven::read_sav(file = "data.sav")
 data <- read.csv("data.csv")
+
+L <- list("watch_wd","watch_wd_sq","watch_we", "watch_we_sq", "play_wd", "play_wd_sq", "play_we", "play_we_sq", "comp_wd", "comp_wd_sq","comp_we", "comp_we_sq", "sp_wd", "sp_wd_sq", "sp_we", "sp_we_sq")
+cnames<-colnames(clean)
+
 ```
 The data were acquired according to the specifications made by the authors in the preregistration document. However, in the technical report on their OSF page, the authors said to use a 3% margin of error at the 95%CI to estimate sample size. In the published paper, the authors report a 0.3% margin of error, arriving at the same estimate of sample size (N = 298,080. Furthermore, The authors reported a total n of 120,115 participants with usable data. When we attempted to replicate their analyses, we met with a further reduction of n to `r nrow(clean)`. This is not reported anywhere in the published article. Finally, the two data documents provided by the authors differ in the amount of NA data they contain. Where the .csv file contains `r nrow(data)-nrow(clean)` rows with missing values, the .sav file contains `r nrow(data2)-nrow(clean2)` rows with missing values. None of these inconsistencies were reported by the authors in the final paper, and it is unclear which data set the authors ultimately used in their analysis. The fact that the data are ambiguous is a major obstacle for replication analyses.
-```{r BIC analysis, include=False}
+```{r BICanalysis, include=F}
+library(knitr)
 ## Comparing
 uncontrolled.models.linear <- list(NA)
 uncontrolled.models.quad <- list(NA)
