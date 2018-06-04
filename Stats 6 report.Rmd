@@ -46,7 +46,7 @@ library("papaja")
 
 knitr::opts_chunk$set( echo = F , include = F)
 ```
-##introducion 
+## Introducion 
 
 This is a statistical report, based on (add citation) for the class of _Statistics VI (Seminar on statistical analyses of psychological research data) [P0Q01a]_. As required by the guidelines of this project, this report will consist of three main parts, in which we will try to 1)Check the reproducibility status of the published results
 , 2)Check the robustness status of the confirmatory analyses and 3) Check the pre-registration status of the published results by comparing the pre-registered protocol to the published paper. 
@@ -168,27 +168,36 @@ concise <- function (model){
 ```
 
 
-##Reproducibility
+## Reproducibility
 ```{r BIC }
 
 
 ```
-###Exploratory analysis
+### Exploratory analysis
 To begin the replication portion of this report, we start by exploring the possibility of a monotonic relationship between digital screen-time and mental well-being  as described by Przybylski and Weinstein (2017),We achieve this my making use of the Besyan Information Criterion (BIC) and comparing the simple linear models of all variables concerning digital screen-time with their quadratic counterparts. From these results ( add here ) we can suggest that a simple linear regression model would fit beter at least the variables of "time using computer" and "time using smartphone". However, this is consistent with what is reported by Przybylski and Weinstein (2017), the authors claim that although a monotonic relationship could possibly be fitted onto the data, it would be very unsuitable, this can be confirmed  by observing the plotted data presented by the researchers ( see, Przybylski & Weinstein (2017), figure 1)
 
-###Confirmatory analysis 
-```{r table making}
-table.uncontrolled=print(table.maker(clean, add.gender=F, add.ethnic=F, add.ses=F, agg.vars = T, digits=2))
-table.controlled=print(table.maker(clean, add.gender=T, add.ethnic=T, add.ses=T, agg.vars = T, digits=2))
+### Confirmatory analysis 
+```{r table making }
+table.uncontrolled <-print(table.maker(clean, add.gender=F, add.ethnic=F, add.ses=F, agg.vars = T, digits=2))
+table.controlled <-print(table.maker(clean, add.gender=T, add.ethnic=T, add.ses=T, agg.vars = T, digits=2))
+
+
 ```
 
-Following the steps described by the authors we start the exploratory data analysis by creating quadratic models of all four types of digital activities consisting of both linear and of non-linear components, next we extracted all the important value( _SD_, _P_-values, _β1_, Confidence intervals and Cohen’s _d_)    out of the models and created two tables , the first table contains the outcome of the models without taking into account the control variables described in the paper, namely gender ,ethnicity and Socio Economical Status. The second table contains the outcomes of the models with the control variables (See tables below)
-`r table.uncontrolled`
-`r table.controlled`
+Following the steps described by the authors we start the exploratory data analysis by creating quadratic models of all four types of digital activities consisting of both linear and of non-linear components, next we extracted all the important value( _SD_, _P_-values, _β_, Confidence intervals and Cohen’s _d_)    out of the models and created two tables , the first table contains the outcome of the models without taking into account the control variables described in the paper, namely gender ,ethnicity and Socio Economical Status. The second table contains the outcomes of the models with the control variables (See tables below)
+`r kable(table.uncontrolled)`
+`r kable(table.controlled)`
+
+```{r Examples }
+example1 <- table.uncontrolled[1, 1]
+example2 <- table.uncontrolled[5, 2]
+example3 <- table.uncontrolled[5, 6]
+example4 <- table.controlled[5, 1]
+```
 
 ###Reproducibility analysis
-Although we were able to extract all the important statistics out of the raw data without to many issues, notice that some of our values are different from those reported in Przybylski and Weinstein (2017). More specifically, we can see differences in 
-
+Although we were able to extract all the important statistics out from the raw data without to many issues, notice that some of our values are different from those reported in Przybylski and Weinstein (2017). More specifically, we noticed two types of differences in both tables , the first type are small one decimal differences, for example, in our replication of their analysis we obtain a β value of _β_ =`r example1` for the linear component of the variable “watching films and tv programs in weekdays”, whereas in their paper the authors reports  a value of _β_=.98, we see this occur not only for β but for other values too, such as the standard deviation from the linear component of the variable “time spent playing games” (our _SD_=`r example2` vs their  _SD_=.11 ), in the same model we obtain a _|d|_=`r example3` vs their _|d|_=19. These small one decimal differences can be found in both tables, a potential explanation would be a differences in the rounding of the number, however, this explanation becomes less likely once we take onto account the second type of difference we encounter which are  decimal differences higher than only one decimal, for example, in table 2 we observe a _ β_=`r example4` for the linear component of “playing games in the weekdays” vs  _β_=.21 reported by the paper. These multi-decimal difference can’t be explain fully by a rounding difference of the decimals, in order to find the origin of the different outputs, we looked into the data used by the authors for their SSPS analysis , what we noticed is that there was a difference in the amount of missing values(NA) between the raw data and the data used in their SSPS analysis.( maybe add prof of difference here ). 
+It is likely that the researcher handled the missing values in a  way that wasn’t reported in the paper, making it hard for us to fully replicate the results without any differences . Furthermore, the way the variables were coded was “messy” and hard made it to figure out at first sight which variables were which, making it all that more difficult to reproduce their results. Overall, there was a lack of clarity In the way they handled certain steps like dealing  with missing values and  the identity of the variables was also unclear and not intuitive. 
 
 
 
