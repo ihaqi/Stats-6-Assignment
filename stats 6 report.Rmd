@@ -40,12 +40,16 @@ class             : "man"
 output            : papaja::apa6_pdf
 ---
 ```{r load_packages and set-up, include = FALSE}
-library(papaja)
-library(knitr)
-packages.list <- c("papaja", "knitr", "haven", "gvlma", "tidyr", "Rmisc")
-pacman::p_load(packages.list)
+
+devtools::install_github("crsh/papaja")
+list.of.packages <- c("papaja", "knitr", "haven", "gvlma", "tidyr", "Rmisc","lattice","tictoc")
+
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)){install.packages(new.packages,repos = "http://cran.us.r-project.org")}
+lapply(list.of.packages, require, character.only = TRUE)
+
 #knit2html("file.html")
-library(pacman)
+
 knitr::opts_chunk$set( echo = F , include = F)
 ```
 ## Introducion 
@@ -55,15 +59,15 @@ This is a statistical report, based on (add citation) for the class of _Statisti
 ```{r loding_data}
 
 from.csv <- read.csv("data.csv",header=T,sep=",")
+from.sav <- read_sav("data.sav")
 
-clean<- as.data.frame(na.omit(from.csv))
+clean.csv <- as.data.frame(na.omit(from.csv))
+clean.sav <- as.data.frame(na.omit(from.sav))
 
-clean2 <- na.omit(haven::read_sav(file = "data.sav"))
-clean <- na.omit(read.csv("data.csv"))
-data2 <- haven::read_sav(file = "data.sav")
- n data <- read.csv("data.csv")
+clean <- clean.csv
 
 L <- list("watch_wd","watch_wd_sq","watch_we", "watch_we_sq", "play_wd", "play_wd_sq", "play_we", "play_we_sq", "comp_wd", "comp_wd_sq","comp_we", "comp_we_sq", "sp_wd", "sp_wd_sq", "sp_we", "sp_we_sq")
+
 cnames<-colnames(clean)
 ```
 
@@ -257,11 +261,14 @@ example4 <- table.controlled[5, 1]
 ### Reproducibility analysis
 Although we were able to extract all the important statistics from the raw data without too many issues, notice that some of our values are different from those reported in Przybylski and Weinstein (2017). Specifically, we noticed two types of differences in both tables , the first type are small one decimal differences, for example, in our replication of their analysis we obtain a β value of _β_ =`r example1` for the linear component of the variable “watching films and tv programs in weekdays”, whereas in their paper the authors reports  a value of _β_=.98, we see this occur not only for β but for other values too, such as the standard deviation of the linear component of the variable “time spent playing games” (our _SD_=`r example2` vs their  _SD_=.11 ), in the same model we obtain a _|d|_ value of `r example3`, compared to their _|d|_ value of 19. These small one decimal differences can be found in both tables, a potential explanation would be a differences in the rounding of the number. This explanation becomes less likely, however, once we take onto account the second type of difference we encountered. We found decimal differences exceeding one decimal, for example, in table 2 we observe a _ β_=`r example4` for the linear component of “playing games in the weekdays” vs  _β_=.21 reported in the paper. These multi-decimal differences can’t be explain fully by a rounding difference of the decimals. In order to find the origin of the different outputs, we looked into the data used by the authors for their SSPS analysis. We noticed a difference in the amount of missing values(NA) between the raw data and the data used in their SSPS analysis, which will be elaborated on in the preregistration section. 
 It is likely that the researcher handled the missing values in a  way that wasn’t reported in the paper, making it hard for us to fully replicate the results without any differences. Furthermore, the way the variables were coded in an ambiguous manner, making it difficult to determine which specific variables were used in the models reported by the researchers. Overall, there was a lack of clarity in crucial data processing steps such as missing values and variable identification. 
+```{r multiverse}
+
+```
 
 
 ### Preregistration
 
-The data were acquired according to the specifications made by the authors in the preregistration document. However, in the technical report on their OSF page, the authors said to use a 3% margin of error at the 95%CI to estimate sample size. In the published paper, the authors report a 0.3% margin of error, arriving at the same estimate of sample size (N = 298,080. Furthermore, The authors reported a total n of 120,115 participants with usable data. When we attempted to replicate their analyses, we met with a further reduction of n to `r nrow(clean)`. This is not reported anywhere in the published article. Finally, the two data documents provided by the authors differ in the amount of NA data they contain. Where the .csv file contains `r nrow(data)-nrow(clean)` rows with missing values, the .sav file contains `r nrow(data2)-nrow(clean2)` rows with missing values. None of these inconsistencies were reported by the authors in the final paper, and it is unclear which data set the authors ultimately used in their analysis. The fact that the data are ambiguous is a major obstacle for replication analyses.
+The data were acquired according to the specifications made by the authors in the preregistration document. However, in the technical report on their OSF page, the authors said to use a 3% margin of error at the 95%CI to estimate sample size. In the published paper, the authors report a 0.3% margin of error, arriving at the same estimate of sample size (N = 298,080. Furthermore, The authors reported a total n of 120,115 participants with usable data. When we attempted to replicate their analyses, we met with a further reduction of n to `r nrow(clean.csv)`. This is not reported anywhere in the published article. Finally, the two data documents provided by the authors differ in the amount of NA data they contain. Where the .csv file contains `r nrow(from.csv)-nrow(clean.csv)` rows with missing values, the .sav file contains `r nrow(from.sav)-nrow(clean.sav)` rows with missing values. None of these inconsistencies were reported by the authors in the final paper, and it is unclear which data set the authors ultimately used in their analysis. The fact that the data are ambiguous is a major obstacle for replication analyses.
 
 The preregistration document stated that testing the displacement hypothesis was to be done by linear regression modelling, predicting mental well-being through composite scores of screen time. The authors did not conduct these analyses. They explain that ‘Interocular’ tests were sufficient to exclude this hypothesis. Although we only found one unadjusted model for which the BIC criterum favours a purely linear model, this does allow one to question why the authors refrained from the formal hypothesis test detailed in the preregistration document. 
 
