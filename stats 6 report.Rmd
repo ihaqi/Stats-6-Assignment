@@ -261,9 +261,96 @@ example4 <- table.controlled[5, 1]
 ### Reproducibility analysis
 Although we were able to extract all the important statistics from the raw data without too many issues, notice that some of our values are different from those reported in Przybylski and Weinstein (2017). Specifically, we noticed two types of differences in both tables , the first type are small one decimal differences, for example, in our replication of their analysis we obtain a β value of _β_ =`r example1` for the linear component of the variable “watching films and tv programs in weekdays”, whereas in their paper the authors reports  a value of _β_=.98, we see this occur not only for β but for other values too, such as the standard deviation of the linear component of the variable “time spent playing games” (our _SD_=`r example2` vs their  _SD_=.11 ), in the same model we obtain a _|d|_ value of `r example3`, compared to their _|d|_ value of 19. These small one decimal differences can be found in both tables, a potential explanation would be a differences in the rounding of the number. This explanation becomes less likely, however, once we take onto account the second type of difference we encountered. We found decimal differences exceeding one decimal, for example, in table 2 we observe a _ β_=`r example4` for the linear component of “playing games in the weekdays” vs  _β_=.21 reported in the paper. These multi-decimal differences can’t be explain fully by a rounding difference of the decimals. In order to find the origin of the different outputs, we looked into the data used by the authors for their SSPS analysis. We noticed a difference in the amount of missing values(NA) between the raw data and the data used in their SSPS analysis, which will be elaborated on in the preregistration section. 
 It is likely that the researcher handled the missing values in a  way that wasn’t reported in the paper, making it hard for us to fully replicate the results without any differences. Furthermore, the way the variables were coded in an ambiguous manner, making it difficult to determine which specific variables were used in the models reported by the researchers. Overall, there was a lack of clarity in crucial data processing steps such as missing values and variable identification. 
-```{r multiverse}
+
+``` {r Model driven multiverse}
+
+#  To use higher ordder linear models
+#  fit.quad <- gvlma(weight~poly(dayTime,2,raw=TRUE), data=new.data)
+
+b <- as.integer(intToBits(13))
+
+
+cc <- recoder(clean, minority.code=c(b[1],b[2],b[3],b[4],b[5]))
+
+# making difefrent combinations of models
+
+model.combinations <- 8
+
+data <- clean
+
+model.combinations.p <- matrix(nrow = 16, ncol = model.combinations)
+model.combinations.d <- matrix(nrow = 16, ncol = model.combinations)
+
+
+for (i in 1:model.combinations){
+  
+  bit.code <- as.integer(intToBits(i-1))[1:3]
+  model.tmp <- table.maker(data = this.data, add.gender = bit.code[1], add.ethnic = bit.code[2], add.ses = bit.code[3], digits = 9)
+  model.combinations.p[,i] <- model.tmp[,5]
+  model.combinations.d[,i] <- model.tmp[,6]
+  
+}
+xlim.d <- c(0,1)
+ylim.d <- c(0,50)
+
+histogram(model.combinations.p[5,], breaks = 10, xlim = xlim.d, ylim = ylim.d)
+histogram(model.combinations.p[6,], breaks = 10, xlim = xlim.d, ylim = ylim.d)
+
+p.values.5 <- sum(model.combinations.p[5, ] <0.01)
+p.values.6 <- sum(model.combinations.p[6, ] <0.01)
+
+relative.frequency <- p.values.6/64
+relative.frequency
 
 ```
+
+
+```{r Data driven multiverse}
+#  To use higher ordder linear models
+#  fit.quad <- gvlma(weight~poly(dayTime,2,raw=TRUE), data=new.data)
+
+b <- as.integer(intToBits(13))
+
+# making difefrent combinations of data
+
+data.combinations <- 64
+
+data <- clean
+
+data.combinations.p <- matrix(nrow = 16, ncol = data.combinations)
+data.combinations.d <- matrix(nrow = 16, ncol = data.combinations)
+
+# Uncomment these lines after you have run it once, and you want to work on the code, otherwise you'll have to wait a while
+tic()
+for (i in 1:data.combinations){
+  
+  bit.code <- as.integer(intToBits(i-1))[1:6]
+  this.data <- recoder(data = data, minority.code = c(0,bit.code[1],bit.code[2],bit.code[3], bit.code[4]), depr.code = c(0,bit.code[5],bit.code[6]))
+  model.tmp <- table.maker(data = this.data, add.gender = T, add.ethnic = T, add.ses = T, digits = 5)
+  data.combinations.p[,i] <- model.tmp[,5]
+  data.combinations.d[,i] <- model.tmp[,6]
+  print(i)
+}
+toc()
+
+
+xlim.d <- c(0,1)
+ylim.d <- c(0,50)
+
+histogram(data.combinations.p[5,], breaks = 10, xlim = xlim.d, ylim = ylim.d)
+histogram(data.combinations.p[6,], breaks = 10, xlim = xlim.d, ylim = ylim.d)
+
+p.values.5 <- sum(data.combinations.p[5, ] <0.01)
+p.values.6 <- sum(data.combinations.p[6, ] <0.01)
+
+relative.frequency <- p.values.6/64
+relative.frequency
+
+#library(DataExplorer)
+#create_report(clean)
+
+```
+###
 
 
 ### Preregistration
