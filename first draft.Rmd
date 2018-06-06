@@ -116,7 +116,7 @@ ggbarplot(clean.long, x = "device", y = "hours", add = "mean_se",
 
 
 
-``` {r sketch board of codes}
+``` {r Model driven multiverse}
 
 #  To use higher ordder linear models
 #  fit.quad <- gvlma(weight~poly(dayTime,2,raw=TRUE), data=new.data)
