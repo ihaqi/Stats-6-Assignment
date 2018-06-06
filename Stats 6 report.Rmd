@@ -184,9 +184,9 @@ To begin the replication portion of this report, we start by exploring the possi
 ### Confirmatory analysis 
 ```{r table making }
 
-table.uncontrolled <-print(table.maker(clean, add.gender=F, add.ethnic=F, add.ses=F, agg.vars = T, digits=2))
+ttex <- table.uncontrolled <-print(table.maker(clean, add.gender=F, add.ethnic=F, add.ses=F, agg.vars = T, digits=2))
 table.controlled <-print(table.maker(clean, add.gender=T, add.ethnic=T, add.ses=T, agg.vars = T, digits=2))
-table1= apa_table(table.uncontrolled, caption = "Table.1 Uncontrolled variables", note = "_*This table contains all linear and non linear components of the uncontrolled models_", escape = TRUE)
+table1 <- apa_table(table.uncontrolled, caption = "Table.1 Uncontrolled variables", note = "_*This table contains all linear and non linear components of the uncontrolled models_", escape = TRUE)
 
 
 ```
@@ -197,7 +197,7 @@ Following the steps described by the authors we start the exploratory data analy
 
 `r kable(table.controlled)`
 
-`r table1 `
+`r table1`
 
 ```{r Examples }
 example1 <- table.uncontrolled[1, 1]
