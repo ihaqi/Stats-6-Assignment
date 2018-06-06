@@ -1,0 +1,88 @@
+\begin{table*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+
+\caption{(\#tab:table making)Table.1 Uncontrolled variables}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r|r}
+\hline
+  & b & SE & CI(2.5\%) & CI(97.5\%) & p & d\\
+\hline
+Watch Weekday Linear & 0.99 & 0.10 & 0.79 & 1.20 & 0.00 & 0.06\\
+\hline
+Watch Weekday Quadratic & -0.14 & 0.01 & -0.16 & -0.12 & 0.00 & 0.09\\
+\hline
+Watch Weekend Linear & 1.55 & 0.10 & 1.36 & 1.74 & 0.00 & 0.10\\
+\hline
+Watch Weekend Quadratic & -0.17 & 0.01 & -0.18 & -0.15 & 0.00 & 0.13\\
+\hline
+Play Weekday Linear & 3.71 & 0.12 & 3.47 & 3.95 & 0.00 & 0.20\\
+\hline
+Play Weekday Quadratic & -0.34 & 0.01 & -0.37 & -0.32 & 0.00 & 0.18\\
+\hline
+Play Weekend Linear & 3.20 & 0.09 & 3.03 & 3.38 & 0.00 & 0.22\\
+\hline
+Play Weekend Quadratic & -0.27 & 0.01 & -0.28 & -0.25 & 0.00 & 0.20\\
+\hline
+Computer Weekday Linear & 1.32 & 0.10 & 1.11 & 1.52 & 0.00 & 0.08\\
+\hline
+Computer Weekday Quadratic & -0.17 & 0.01 & -0.19 & -0.15 & 0.00 & 0.11\\
+\hline
+Computer Weekend Linear & 1.60 & 0.09 & 1.42 & 1.78 & 0.00 & 0.11\\
+\hline
+Computer Weekend Quadratic & -0.18 & 0.01 & -0.19 & -0.16 & 0.00 & 0.14\\
+\hline
+Smatphone Weekday Linear & -0.56 & 0.09 & -0.73 & -0.40 & 0.00 & 0.04\\
+\hline
+Smatphone Weekday Quadratic & -0.01 & 0.01 & -0.03 & 0.00 & 0.11 & 0.01\\
+\hline
+Smatphone Weekend Linear & 0.46 & 0.08 & 0.29 & 0.62 & 0.00 & 0.03\\
+\hline
+Smatphone Weekend Quadratic & -0.10 & 0.01 & -0.11 & -0.08 & 0.00 & 0.08\\
+\hline
+\end{tabular}
+\end{table*}
+\begin{table*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+
+\caption{(\#tab:table making)Table.1 Uncontrolled variables}
+\centering
+\begin{tabular}[t]{l|r|r|r|r|r|r}
+\hline
+  & b & SE & CI(2.5\%) & CI(97.5\%) & p & d\\
+\hline
+Watch Weekday Linear & 0.99 & 0.10 & 0.79 & 1.20 & 0.00 & 0.06\\
+\hline
+Watch Weekday Quadratic & -0.14 & 0.01 & -0.16 & -0.12 & 0.00 & 0.09\\
+\hline
+Watch Weekend Linear & 1.55 & 0.10 & 1.36 & 1.74 & 0.00 & 0.10\\
+\hline
+Watch Weekend Quadratic & -0.17 & 0.01 & -0.18 & -0.15 & 0.00 & 0.13\\
+\hline
+Play Weekday Linear & 3.71 & 0.12 & 3.47 & 3.95 & 0.00 & 0.20\\
+\hline
+Play Weekday Quadratic & -0.34 & 0.01 & -0.37 & -0.32 & 0.00 & 0.18\\
+\hline
+Play Weekend Linear & 3.20 & 0.09 & 3.03 & 3.38 & 0.00 & 0.22\\
+\hline
+Play Weekend Quadratic & -0.27 & 0.01 & -0.28 & -0.25 & 0.00 & 0.20\\
+\hline
+Computer Weekday Linear & 1.32 & 0.10 & 1.11 & 1.52 & 0.00 & 0.08\\
+\hline
+Computer Weekday Quadratic & -0.17 & 0.01 & -0.19 & -0.15 & 0.00 & 0.11\\
+\hline
+Computer Weekend Linear & 1.60 & 0.09 & 1.42 & 1.78 & 0.00 & 0.11\\
+\hline
+Computer Weekend Quadratic & -0.18 & 0.01 & -0.19 & -0.16 & 0.00 & 0.14\\
+\hline
+Smatphone Weekday Linear & -0.56 & 0.09 & -0.73 & -0.40 & 0.00 & 0.04\\
+\hline
+Smatphone Weekday Quadratic & -0.01 & 0.01 & -0.03 & 0.00 & 0.11 & 0.01\\
+\hline
+Smatphone Weekend Linear & 0.46 & 0.08 & 0.29 & 0.62 & 0.00 & 0.03\\
+\hline
+Smatphone Weekend Quadratic & -0.10 & 0.01 & -0.11 & -0.08 & 0.00 & 0.08\\
+\hline
+\end{tabular}
+\end{table*}

@@ -160,12 +160,8 @@ relative.frequency
 
 
 ```{r Data driven multiverse}
-#  To use higher ordder linear models
-#  fit.quad <- gvlma(weight~poly(dayTime,2,raw=TRUE), data=new.data)
 
-b <- as.integer(intToBits(13))
-
-# making difefrent combinations of data
+# making different combinations of data
 
 data.combinations <- 64
 
@@ -174,17 +170,18 @@ data <- clean
 data.combinations.p <- matrix(nrow = 16, ncol = data.combinations)
 data.combinations.d <- matrix(nrow = 16, ncol = data.combinations)
 
+
 # Uncomment these lines after you have run it once, and you want to work on the code, otherwise you'll have to wait a while
 tic()
-for (i in 1:data.combinations){
-  
-  bit.code <- as.integer(intToBits(i-1))[1:6]
-  this.data <- recoder(data = data, minority.code = c(0,bit.code[1],bit.code[2],bit.code[3], bit.code[4]), depr.code = c(0,bit.code[5],bit.code[6]))
-  model.tmp <- table.maker(data = this.data, add.gender = T, add.ethnic = T, add.ses = T, digits = 5)
-  data.combinations.p[,i] <- model.tmp[,5]
-  data.combinations.d[,i] <- model.tmp[,6]
-  print(i)
-}
+# for (i in 1:data.combinations){
+#   
+#   bit.code <- as.integer(intToBits(i-1))[1:6]
+#   this.data <- recoder(data = data, minority.code = c(0,bit.code[1],bit.code[2],bit.code[3], bit.code[4]), depr.code = c(0,bit.code[5],bit.code[6]))
+#   model.tmp <- table.maker(data = this.data, add.gender = T, add.ethnic = T, add.ses = T, digits = 5)
+#   data.combinations.p[,i] <- model.tmp[,5]
+#   data.combinations.d[,i] <- model.tmp[,6]
+#   print(i)
+# }
 toc()
 
 
@@ -197,8 +194,11 @@ histogram(data.combinations.p[6,], breaks = 10, xlim = xlim.d, ylim = ylim.d)
 p.values.5 <- sum(data.combinations.p[5, ] <0.01)
 p.values.6 <- sum(data.combinations.p[6, ] <0.01)
 
-relative.frequency <- p.values.6/64
-relative.frequency
+relative.frequency.6 <- p.values.6/64
+
+histogram(as.numeric(as.list(data.combinations.d)), breaks = 10, xlim = c(0,0.2), ylim = ylim.d)
+l<-as.numeric(as.list(data.combinations.d))
+plot(ecdf(l))
 
 #library(DataExplorer)
 #create_report(clean)
