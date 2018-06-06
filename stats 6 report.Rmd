@@ -296,11 +296,11 @@ ylim.d <- c(0,50)
 histogram(model.combinations.p[5,], breaks = 10, xlim = xlim.d, ylim = ylim.d)
 histogram(model.combinations.p[6,], breaks = 10, xlim = xlim.d, ylim = ylim.d)
 
-p.values.5 <- sum(model.combinations.p[5, ] <0.01)
-p.values.6 <- sum(model.combinations.p[6, ] <0.01)
+p.values.avg.5.nog <- mean(model.combinations.p[5,1],model.combinations.p[5,3],model.combinations.p[5,5],model.combinations.p[5,7])
+p.values.avg.5.g <- mean(model.combinations.p[5,2], model.combinations.p[5,4],model.combinations.p[5,6],model.combinations.p[5,8])
+p.values.avg.6 <- mean(model.combinations.p[6, ])
 
-relative.frequency <- p.values.6/64
-relative.frequency
+
 
 ```
 
@@ -337,8 +337,8 @@ toc()
 xlim.d <- c(0,1)
 ylim.d <- c(0,50)
 
-histogram(data.combinations.p[5,], breaks = 10, xlim = xlim.d, ylim = ylim.d)
-histogram(data.combinations.p[6,], breaks = 10, xlim = xlim.d, ylim = ylim.d)
+Hist.datadriven.5 <- histogram(data.combinations.p[5,], breaks = 10, xlim = xlim.d, ylim = ylim.d)
+Hist.datadriven.6 <- histogram(data.combinations.p[6,], breaks = 10, xlim = xlim.d, ylim = ylim.d)
 
 p.values.5 <- sum(data.combinations.p[5, ] <0.01)
 p.values.6 <- sum(data.combinations.p[6, ] <0.01)
@@ -352,10 +352,17 @@ relative.frequency
 ```
 ### Multiverse Analysis
 #### Model Driven Multiverse
+We found that, by manipulating the variables included in the models in 8 different ways (including/excluding each control variable "gender", "ethnicity", and "SES". We found that this multiverse of models only resulted in different p values for the linear and linear+quadratic models of weekday game usage, and the only variable underlying this difference was "gender". Including the control variable of gender, regardless of any other combination of variables, shifted the average p value of the slope of the linear model from p = `r p.values.avg.5.nog` to `p.values.avg.5.g`.
 
 #### Data Driven Multiverse
 
-We took into account different combinations of possible coding strategies that could have been used by the researchers, in an approach akin to Steegen, Tuerlinckx, Gelman & Vanpaemel (2016). 
+We took into account different combinations of possible coding strategies that could have been used by the researchers, in an approach akin to Steegen, Tuerlinckx, Gelman & Vanpaemel (2016). For the recoding of the categorical variable "ethnicity", we allowed each level but "white" to be recoded into the binary variable "minority". The same was done for the categorical variable "deprived", although similarly to the previous recoding, the first level was maintained due to reasonability concerns. This resulted in a multiverse consisting of 2^6 = 64 possible codings of the variable. We then examined the distribution of the p and d values resulting from applying the full model, thus including all control variables, to the different data sets.
+Two models had diverse distributions of p values. Specifically, the distributions of p values of the purely linear model of weekday game usage resulted in the histogram in figure 1
+`r Hist.datadriven.5`
+The distributions of p values of the linear+quadratic model of weekday game usage resulted in the histogram in figure 2
+`r Hist.datadriven.6`
+It is interesting to see the multiverse-frequency of p values below the significance threshold of .001 given by the researchers. We find that, for this model, the multiverse encapsulating all possible researcher choices in variable coding only results in a significant value for this model in `r signif(relative.frequency,2)`% of the cases. For all other cases, the p values of the models seem reasonable. However, we obtain a different p value than the authors when using the full model on the subset of the data multiverse used by the authors. Specifically, we find a p value of p = `r data.combinations.p[5,1]` for the linear model describing weekday game usage, compaired to the p = 0.059 authors. These differences, along with the difference in regression parameters reported above, can likely be ascribed to the ambiguities mentioned throughout the paper. 
+
 
 
 ### Preregistration
