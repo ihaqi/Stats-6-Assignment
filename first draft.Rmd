@@ -136,6 +136,7 @@ model.combinations.p <- matrix(nrow = 16, ncol = model.combinations)
 model.combinations.d <- matrix(nrow = 16, ncol = model.combinations)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 data.combinations.p <- matrix(nrow = 16, ncol = data.combinations)
 data.combinations.d <- matrix(nrow = 16, ncol = data.combinations)
 
@@ -144,6 +145,13 @@ for (i in 1:model.combinations){
   this.data<-data
   bit.code <- as.integer(intToBits(i-1))[1:3]
   model.tmp <- table.maker(data = this.data, add.gender = bit.code[1], add.ethnic = bit.code[2], add.ses = bit.code[3], digits = 5)
+=======
+
+for (i in 1:model.combinations){
+  
+  bit.code <- as.integer(intToBits(i-1))[1:3]
+  model.tmp <- table.maker(data = this.data, add.gender = bit.code[1], add.ethnic = bit.code[2], add.ses = bit.code[3], digits = 9)
+>>>>>>> 7b2cdf48fc9092cf50b3b21b5950c805ef859051
 =======
 
 for (i in 1:model.combinations){
@@ -160,6 +168,7 @@ ylim.d <- c(0,50)
 
 histogram(model.combinations.p[5,], breaks = 10, xlim = xlim.d, ylim = ylim.d)
 histogram(model.combinations.p[6,], breaks = 10, xlim = xlim.d, ylim = ylim.d)
+<<<<<<< HEAD
 
 p.values.5 <- sum(model.combinations.p[5, ] <0.01)
 p.values.6 <- sum(model.combinations.p[6, ] <0.01)
@@ -185,6 +194,33 @@ data <- clean
 data.combinations.p <- matrix(nrow = 16, ncol = data.combinations)
 data.combinations.d <- matrix(nrow = 16, ncol = data.combinations)
 
+=======
+
+p.values.5 <- sum(model.combinations.p[5, ] <0.01)
+p.values.6 <- sum(model.combinations.p[6, ] <0.01)
+
+relative.frequency <- p.values.6/64
+relative.frequency
+
+```
+
+
+```{r Data driven multiverse}
+#  To use higher ordder linear models
+#  fit.quad <- gvlma(weight~poly(dayTime,2,raw=TRUE), data=new.data)
+
+b <- as.integer(intToBits(13))
+
+# making difefrent combinations of data
+
+data.combinations <- 64
+
+data <- clean
+
+data.combinations.p <- matrix(nrow = 16, ncol = data.combinations)
+data.combinations.d <- matrix(nrow = 16, ncol = data.combinations)
+
+>>>>>>> 7b2cdf48fc9092cf50b3b21b5950c805ef859051
 # Uncomment these lines after you have run it once, and you want to work on the code, otherwise you'll have to wait a while
 tic()
 for (i in 1:data.combinations){
@@ -221,12 +257,15 @@ mwb: they used
 mwbi: didn't use
 $$\hat{\lambda}_{MLE} = \bar{x} = `r df.sqrt`$$
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 ```{r}
 library(DataExplorer)
 create_report(clean)
 ```
 
+=======
+>>>>>>> 7b2cdf48fc9092cf50b3b21b5950c805ef859051
 =======
 >>>>>>> 7b2cdf48fc9092cf50b3b21b5950c805ef859051
 use `kable`
