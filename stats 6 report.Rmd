@@ -350,7 +350,12 @@ relative.frequency
 #create_report(clean)
 
 ```
-###
+### Multiverse Analysis
+#### Model Driven Multiverse
+
+#### Data Driven Multiverse
+
+We took into account different combinations of possible coding strategies that could have been used by the researchers, in an approach akin to Steegen, Tuerlinckx, Gelman & Vanpaemel (2016). 
 
 
 ### Preregistration
