@@ -354,16 +354,30 @@ for (i in 1:data.combinations){
 xlim.d <- c(0,.15)
 ylim.d <- c(0,25)
 
-histogram.data.driven.1 <- densityplot(data.combinations.p[5,]/64, breaks = 10, xlim = xlim.d, ylim = ylim.d )
-histogram.data.driven.2 <- densityplot(data.combinations.p[13,]), breaks = 10, xlim = xlim.d, ylim = ylim.d*5)
+histogram.data.driven.1 <- densityplot(data.combinations.p[5,], breaks = 10, xlim = xlim.d, ylim = ylim.d )
+histogram.data.driven.2 <- densityplot(data.combinations.p[13,], breaks = 10, xlim = xlim.d, ylim = ylim.d)
 
-ddd <- density(data.combinations.p[13,])
-plot(ddd)
 significant.p.data.driven.1 <- sum(data.combinations.p[5, ] <0.01)
 significant.p.data.driven.2 <- sum(data.combinations.p[13, ] <0.01)
 
 relative.frequency.data.driven.1 <- significant.p.data.driven.1/64
 relative.frequency.data.driven.2 <- significant.p.data.driven.2/64
+
+```
+
+```{r, plot_p_first, fig.cap = "Distribution of P values for different combinations of data for the linear component of the regression model of weekday game play"}
+ddd1 <- density(data.combinations.p[5,])
+ydd <- rep(0,64)
+{plot(ddd1$x,100*ddd1$y/64, type="l", xlab = "P values", ylab = "Estimated percent of p values", main = "Distribution of P values for MODEL 1")
+points(x=jitter(data.combinations.p[5,]),y=jitter(ydd), col="blue")}
+
+```
+
+```{r, plot_p_second, fig.cap = "Distribution of P values for different combinations of data for the linear component of the regression model of linear weekday smartphone usage"}
+ddd2 <- density(data.combinations.p[13,])
+ydd <- rep(0,64)
+{plot(ddd2$x,100*ddd2$y/length(ddd2$y), type="l", xlab = "P values", ylab = "Estimated percent of p values", main = "Distribution of P values for MODEL 2")
+points(x=jitter(data.combinations.p[13,]),y=jitter(ydd), col="blue")}
 
 ```
 
@@ -376,16 +390,16 @@ We found that, by manipulating the variables included in the models in 8 differe
 We took into account different combinations of possible coding strategies that could have been used by the researchers, in an approach akin to @steegen2016increasing. For the recoding of the categorical variable "ethnicity", we allowed each level but "white" to be recoded into the binary variable "minority". The same was done for the categorical variable "deprived", although similarly to the previous recoding, the first level was maintained due to reasonability concerns. This resulted in a multiverse consisting of $2^6 = 64$ possible codings of the variable. We then examined the distribution of the p and d values resulting from applying the full model, thus including all control variables, to the different data sets.
 
 ```{r Histdatadriven1, fig.cap = "papaja's APA6 template is available through the RStudio menues.", fig.align = "center"}
-histogram.data.driven.1
+#histogram.data.driven.1
 ```
 
-Two models had diverse distributions of p values. Specifically, the distributions of p values of the linear component of the regression model of weekday game play resulted in the histogram in Figure\ \@ref(fig:Histdatadriven1)
+Two models had diverse distributions of p values. Specifically, the distributions of p values of the linear component of the regression model of weekday game play resulted in the histogram in Figure\ \@ref(fig:plot_p_first)
 
 ```{r Histdatadriven2, fig.cap = "papaja's APA6 template is available through the RStudio menues.", fig.align = "center"}
-histogram.data.driven.2
+#histogram.data.driven.2
 ```
 
-The distributions of p values of the linear component of the regression model of weekday smartphone usage resulted in the histogram in Figure\ \@ref(fig:Histdatadriven2).
+The distributions of p values of the linear component of the regression model of weekday smartphone usage resulted in the histogram in Figure\ \@ref(fig:plot_p_second).
 
 It is interesting to see the multiverse-frequency of p values below the significance threshold of $\alpha = .001$ given by the researchers. We find that, for this model, the multiverse encapsulating all possible researcher choices in variable coding only results in a significant value for this model in $`r signif(relative.frequency.data.driven.2,2)`\%$ of the cases. For all other cases, the p values of the models seem reasonable. However, we obtain a different p value than the authors when using the full model on the subset of the data multiverse used by the authors. Specifically, we find a p value of $p = `r data.combinations.p[5,1]`$ for the linear model describing weekday game play, compaired to the $p = 0.059$ authors. These differences, along with the difference in regression parameters reported above, can likely be ascribed to the ambiguities mentioned throughout the paper.
 

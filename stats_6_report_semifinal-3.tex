@@ -58,6 +58,15 @@
 \endgroup}
 
 
+  \usepackage{graphicx}
+  \makeatletter
+  \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+  \def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+  \makeatother
+  % Scale images if necessary, so that they will not overflow the page
+  % margins by default, and it is still possible to overwrite the defaults
+  % using explicit options in \includegraphics[width, height, ...]{}
+  \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 \ifxetex
   \usepackage[setpagesize=false, % page size defined by xetex
               unicode=false, % unicode breaks when used with xetex
@@ -303,9 +312,21 @@ variables were used in the models reported by the researchers. Overall,
 there was a lack of clarity in crucial data processing steps such as
 missing values and variable identification.
 
-\begin{verbatim}
-## 40.39 sec elapsed
-\end{verbatim}
+\begin{figure}
+\centering
+\includegraphics{stats_6_report_semifinal-3_files/figure-latex/plot_p_first-1.pdf}
+\caption{(\#fig:plot\_p\_first)Distribution of P values for different
+combinations of data for the linear component of the regression model of
+weekday game play}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{stats_6_report_semifinal-3_files/figure-latex/plot_p_second-1.pdf}
+\caption{(\#fig:plot\_p\_second)Distribution of P values for different
+combinations of data for the linear component of the regression model of
+linear weekday smartphone usage}
+\end{figure}
 
 \hypertarget{multiverse-analysis}{%
 \subsubsection{Multiverse Analysis}\label{multiverse-analysis}}
@@ -340,32 +361,14 @@ variable. We then examined the distribution of the p and d values
 resulting from applying the full model, thus including all control
 variables, to the different data sets.
 
-\begin{figure}
-
-{\centering \includegraphics{stats_6_report_semifinal-3_files/figure-latex/Histdatadriven1-1} 
-
-}
-
-\caption{papaja's APA6 template is available through the RStudio menues.}\label{fig:Histdatadriven1}
-\end{figure}
-
 Two models had diverse distributions of p values. Specifically, the
 distributions of p values of the linear component of the regression
 model of weekday game play resulted in the histogram in
-Figure~\ref{fig:Histdatadriven1}
-
-\begin{figure}
-
-{\centering \includegraphics{stats_6_report_semifinal-3_files/figure-latex/Histdatadriven2-1} 
-
-}
-
-\caption{papaja's APA6 template is available through the RStudio menues.}\label{fig:Histdatadriven2}
-\end{figure}
+Figure~@ref(fig:plot\_p\_first)
 
 The distributions of p values of the linear component of the regression
 model of weekday smartphone usage resulted in the histogram in
-Figure~\ref{fig:Histdatadriven2}.
+Figure~@ref(fig:plot\_p\_second).
 
 It is interesting to see the multiverse-frequency of p values below the
 significance threshold of \(\alpha = .001\) given by the researchers. We
