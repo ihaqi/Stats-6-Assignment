@@ -366,6 +366,43 @@ p.values.6 <- sum(data.combinations.p[6, ] <0.01)
 relative.frequency <- p.values.6/64
 #relative.frequency
 
+# D values
+colors = rainbow(16)
+
+l<-as.numeric(as.list(data.combinations.d[1,]))
+
+d.min.model <- 0.008#min(min(model.combinations.d))
+d.max.model <- 0.25#max(max(model.combinations.d))
+nbreaks <- 10000
+#d.max.model - d.min.model
+i=1
+{ i=1
+  l <- as.numeric(as.list((data.combinations.d[i,])))
+  hcum1 <- hist(as.numeric(as.list((data.combinations.d[1,]))), breaks = seq(d.min.model,d.max.model,1/nbreaks), plot = FALSE)
+  hcum1$counts <- cumsum(hcum1$counts)
+  hcum2 <- hist(as.numeric(as.list((data.combinations.d[2,]))), breaks = seq(d.min.model,d.max.model,1/nbreaks), plot = FALSE)
+  hcum2$counts <- cumsum(hcum2$counts)
+  plot()
+{  plot.new()
+  plot(hcum1$breaks,c(0,hcum1$counts),type = "l", col = colors[1])
+  points(hcum1$breaks,c(0,hcum2$counts),type = "l", col = colors[2])}
+  
+for(i in 2:16){
+  l <- as.numeric(as.list((data.combinations.d[i,])))
+  hcum <- h <- hist(l, xlim = c(d.min.model,d.max.model), breaks = nbreaks, plot = FALSE)
+  hcum$counts <- cumsum(hcum$counts)
+  points(hcum$breaks,c(0,hcum$counts),type = "l", col = colors[i], add=F)
+}
+  }
+
+l<-as.numeric(as.list(data.combinations.d[1,]))
+{plot.new()
+plot(ecdf(l), xlab = " d values", ylab = "cumulative d values", col = colors[1] )
+for(i in 2:16){
+  l<-as.numeric(as.list(data.combinations.d[i,]))
+  points(plot(ecdf(l) ,col = colors[i]), add = TRUE)
+}
+}
 #library(DataExplorer)
 #create_report(clean)
 
