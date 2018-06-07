@@ -261,6 +261,7 @@ table.controlled <- table.maker(clean, add.gender=T, add.ethnic=T, add.ses=T, ag
 table.uncontrolled.kable <- kable(table.uncontrolled, caption = "Table.1 Unadjusted models" )
 
 ```
+apa_table(x = table.uncontrolled, caption = "Unadjusted models", note = "This table contains statistics pertaining to our replication of the original adjusted models.", small = TRUE)
 
 Following the steps described by the authors we start the exploratory data analysis by creating regression models of all four types of digital activities consisting of both linear and quadratic components, next we extracted all the important value( _SD_, _P_-values, _β_, Confidence intervals and Cohen’s _d_)    out of the models and created two tables ,the first table contains the outcome of the models without taking into account the control variables described in the paper, namely gender ,ethnicity and Socio Economical Status. The second table contains the outcomes of the models with the control variables (See tables below)
 
@@ -278,7 +279,7 @@ example4 <- table.controlled[5, 1]
 ```
 
 ### Reproducibility analysis
-Although we were able to extract all the important statistics from the raw data without too many issues, notice that some of our values are different from those reported in Przybylski and Weinstein (2017). Specifically, we noticed two types of differences in both tables , the first type are small one decimal differences, for example, in our replication of their analysis we obtain a β value of $\beta$ =`r example1` for the linear component of the variable “watching films and tv programs in weekdays”, whereas in their paper the authors reports  a value of $\beta$=.98, we see this occur not only for β but for other values too, such as the standard deviation of the linear component of the variable “time spent playing games” (our $SD$ =`r example2` vs their  $SD =.11$ ), in the same model we obtain a $cohens'd$ value of `r example3`, compared to their $d$ value of 19. These small one decimal differences can be found in both tables, a potential explanation would be a differences in the rounding of the number. This explanation becomes less likely, however, once we take onto account the second type of difference we encountered. We found decimal differences exceeding one decimal, for example, in table 2 we observe a $\beta$ =`r example4` for the linear component of “playing games in the weekdays” vs  $\beta$ =.21 reported in the paper. These multi-decimal differences can’t be explain fully by a rounding difference of the decimals. In order to find the origin of the different outputs, we looked into the data used by the authors for their SSPS analysis. We noticed a difference in the amount of missing values (NA) between the raw data and the data used in their SSPS analysis, which will be elaborated on in the preregistration section. 
+Although we were able to extract all the important statistics from the raw data without too many issues, notice that some of our values are different from those reported in Przybylski and Weinstein (2017). Specifically, we noticed two types of differences in both tables , the first type are small one decimal differences, for example, in our replication of their analysis we obtain a β value of $\beta$ =`r example1` for the linear component of the variable “watching films and tv programs in weekdays”, whereas in their paper the authors reports  a value of $\beta$=.98, we see this occur not only for β but for other values too, such as the standard deviation of the linear component of the variable “time spent playing games” (our $SD$ =`r example2` vs their  $SD =.11$ ), in the same model we obtain a $cohens'd$ value of `r example3`, compared to their $d$ value of 19. These small one decimal differences can be found in both tables, a potential explanation would be a differences in the rounding of the number. This explanation becomes less likely, however, once we take onto account the second type of difference we encountered. We found decimal differences exceeding one decimal, for example, in table 2 we observe a $\beta =`r example4`$ for the linear component of “playing games in the weekdays” vs  $\beta = 0.21$ reported in the paper. These multi-decimal differences can’t be explain fully by a rounding difference of the decimals. In order to find the origin of the different outputs, we looked into the data used by the authors for their SSPS analysis. We noticed a difference in the amount of missing values (NA) between the raw data and the data used in their SSPS analysis, which will be elaborated on in the preregistration section. See Figure\ \@ref(fig:h1ch) 
 It is likely that the researcher handled the missing values in a  way that wasn’t reported in the paper, making it hard for us to fully replicate the results without any differences. Furthermore, the way the variables were coded in an ambiguous manner, making it difficult to determine which specific variables were used in the models reported by the researchers. Overall, there was a lack of clarity in crucial data processing steps such as missing values and variable identification. 
 
 ``` {r Model_driven_multiverse, cache = TRUE}
@@ -286,10 +287,6 @@ It is likely that the researcher handled the missing values in a  way that wasn�
 #  To use higher ordder linear models
 #  fit.quad <- gvlma(weight~poly(dayTime,2,raw=TRUE), data=new.data)
 
-b <- as.integer(intToBits(13))
-
-
-cc <- recoder(clean, minority.code=c(b[1],b[2],b[3],b[4],b[5]))
 
 # making difefrent combinations of models
 
@@ -313,8 +310,8 @@ for (i in 1:model.combinations){
 xlim.d <- c(0,1)
 ylim.d <- c(0,50)
 
-histogram(model.combinations.p[5,], breaks = 10, xlim = xlim.d, ylim = ylim.d)
-histogram(model.combinations.p[6,], breaks = 10, xlim = xlim.d, ylim = ylim.d)
+h1<-histogram(model.combinations.p[5,], breaks = 10, xlim = xlim.d, ylim = ylim.d)
+h2<-histogram(model.combinations.p[6,], breaks = 10, xlim = xlim.d, ylim = ylim.d)
 
 p.values.avg.5.nog <- mean(model.combinations.p[5,1],model.combinations.p[5,3],model.combinations.p[5,5],model.combinations.p[5,7])
 p.values.avg.5.g <- mean(model.combinations.p[5,2], model.combinations.p[5,4],model.combinations.p[5,6],model.combinations.p[5,8])
@@ -324,6 +321,9 @@ p.values.avg.6 <- mean(model.combinations.p[6, ])
 
 ```
 
+```{r h1ch, fig.cap = "papaja's APA6 template is available through the RStudio menues.", fig.align = "center"}
+plot(h1)
+```
 
 ```{r Data_driven_multiverse, cache=T}
 #  To use higher ordder linear models
