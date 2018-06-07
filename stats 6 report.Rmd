@@ -229,9 +229,8 @@ for (i in 1:(length(L)/2)){
   degree.model.controlled[i] <- which.min(calc.bic.ctrl$BIC)
 }
 
-
-
 ```
+
 To begin the replication portion of this report, we start by exploring the possibility of a monotonic relationship between digital screen-time and mental well-being  as described by Przybylski and Weinstein (2017), We achieve this my making use of the Besyan Information Criterion (BIC) and comparing the simple linear models of all variables concerning digital screen-time with their simple and quadratic counterparts. We found that for the models that controlled for confounding variables, the fit was greater for the models with both a linear and quadratic component. For the unadjusted models, we found one model of which the BIC index favoured a linear model alone. Specifically, for smartphone use during weekdays ( see, Przybylski & Weinstein (2017), figure 1).
 
 ### Confirmatory analysis 
@@ -239,10 +238,11 @@ To begin the replication portion of this report, we start by exploring the possi
 
 table.uncontrolled <-print(table.maker(clean, add.gender=F, add.ethnic=F, add.ses=F, agg.vars = T, digits=2))
 table.controlled <-print(table.maker(clean, add.gender=T, add.ethnic=T, add.ses=T, agg.vars = T, digits=2))
-table1 <-kable(table.uncontrolled, caption = "Table.1 Uncontrolled variables" )
-table1
+table.uncontrolled.kable <-kable(table.uncontrolled, caption = "Table.1 Uncontrolled variables" )
 
 ```
+
+`r table.uncontrolled.kable`
 
 Following the steps described by the authors we start the exploratory data analysis by creating quadratic models of all four types of digital activities consisting of both linear and of non-linear components, next we extracted all the important value( _SD_, _P_-values, _β_, Confidence intervals and Cohen’s _d_)    out of the models and created two tables , the first table contains the outcome of the models without taking into account the control variables described in the paper, namely gender ,ethnicity and Socio Economical Status. The second table contains the outcomes of the models with the control variables (See tables below)
 
@@ -250,7 +250,6 @@ Following the steps described by the authors we start the exploratory data analy
 
 `r kable(table.controlled)`
 
-`r table1 `
 
 ```{r Examples }
 example1 <- table.uncontrolled[1, 1]

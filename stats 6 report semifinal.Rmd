@@ -51,7 +51,7 @@ lapply(list.of.packages, require, character.only = TRUE)
 
 #knit2html("file.html")
 
-knitr::opts_chunk$set( echo = F , include = F)
+knitr::opts_chunk$set( echo = F , include = T, error = F, warning = F, message = F)
 ```
 ## Introducion 
 
@@ -115,7 +115,6 @@ model.maker <- function(data, variable.name, add.gender=F, add.ethnic=F, add.ses
 data <- c(1:12)
 dimnames <- list(time=c("linear","quadratic"), name=c(1:6))
 mat <- matrix(data, ncol=6, nrow=2, dimnames=dimnames)
-as.data.frame((mat))
 
 row.maker <- function (model){
   
@@ -171,6 +170,25 @@ table.maker <- function(data, add.gender=F, add.ethnic=F, add.ses=F, agg.vars=F,
   
 } #Function to make tables with all the important statistics
 
+recoder <- function(data, minority.code = c(0,1,1,1,1), depr.code = c(0,1,1)){
+  
+  # re-coding ethnicity
+  data$minority[data$Ethnicg==1] <- minority.code[1] # Whites
+  data$minority[data$Ethnicg==2] <- minority.code[2] # Mixed / multiple ethnic groups
+  data$minority[data$Ethnicg==3] <- minority.code[3] # Asian / Asian British
+  data$minority[data$Ethnicg==4] <- minority.code[4] # Black / African / Caribbean / Black British
+  data$minority[data$Ethnicg==5] <- minority.code[5] # Other ethnic group
+  
+  # re-coding deprivation
+  data$deprived[data$IMD3==1] <- depr.code[1] # lower IMD3 quantiles
+  data$deprived[data$IMD3==2] <- depr.code[2] # middle IMD3 quantiles
+  data$deprived[data$IMD3==3] <- depr.code[3] # higher IMD3 quantiles
+  
+  return(data)
+  
+}
+
+
 concise <- function (model){
   
   p.values <- summary(model)$coefficients[,4]
@@ -179,6 +197,7 @@ concise <- function (model){
   return(data.frame(p.values,effect.sizes))
   
 } #Function for P-values and effect-size's
+
 
 ```
 
@@ -237,20 +256,18 @@ To begin the replication portion of this report, we start by exploring the possi
 ### Confirmatory analysis 
 ```{r table making }
 
-table.uncontrolled <-print(table.maker(clean, add.gender=F, add.ethnic=F, add.ses=F, agg.vars = T, digits=2))
-table.controlled <-print(table.maker(clean, add.gender=T, add.ethnic=T, add.ses=T, agg.vars = T, digits=2))
-table1 <-kable(table.uncontrolled, caption = "Table.1 Uncontrolled variables" )
-table1
+table.uncontrolled <- table.maker(clean, add.gender=F, add.ethnic=F, add.ses=F, agg.vars = T, digits=2)
+table.controlled <- table.maker(clean, add.gender=T, add.ethnic=T, add.ses=T, agg.vars = T, digits=2)
+table.uncontrolled.kable <- kable(table.uncontrolled, caption = "Table.1 Uncontrolled variables" )
 
 ```
 
 Following the steps described by the authors we start the exploratory data analysis by creating quadratic models of all four types of digital activities consisting of both linear and of non-linear components, next we extracted all the important value( _SD_, _P_-values, _β_, Confidence intervals and Cohen’s _d_)    out of the models and created two tables , the first table contains the outcome of the models without taking into account the control variables described in the paper, namely gender ,ethnicity and Socio Economical Status. The second table contains the outcomes of the models with the control variables (See tables below)
 
-`r kable(table.uncontrolled)`
+`r apa_table(x = table.controlled, caption = "Controlled variables")`
+`r kable(x = table.uncontrolled, caption = "Uncontrolled variables")`
+`r print(kable(x = table.uncontrolled, caption = "Uncontrolled variables"))`
 
-`r kable(table.controlled)`
-
-`r table1 `
 
 ```{r Examples }
 example1 <- table.uncontrolled[1, 1]
@@ -263,7 +280,7 @@ example4 <- table.controlled[5, 1]
 Although we were able to extract all the important statistics from the raw data without too many issues, notice that some of our values are different from those reported in Przybylski and Weinstein (2017). Specifically, we noticed two types of differences in both tables , the first type are small one decimal differences, for example, in our replication of their analysis we obtain a β value of $\beta$ =`r example1` for the linear component of the variable “watching films and tv programs in weekdays”, whereas in their paper the authors reports  a value of $\beta$=.98, we see this occur not only for β but for other values too, such as the standard deviation of the linear component of the variable “time spent playing games” (our $SD$ =`r example2` vs their  $SD =.11$ ), in the same model we obtain a $cohens'd$ value of `r example3`, compared to their $d$ value of 19. These small one decimal differences can be found in both tables, a potential explanation would be a differences in the rounding of the number. This explanation becomes less likely, however, once we take onto account the second type of difference we encountered. We found decimal differences exceeding one decimal, for example, in table 2 we observe a $\beta$ =`r example4` for the linear component of “playing games in the weekdays” vs  $\beta$ =.21 reported in the paper. These multi-decimal differences can’t be explain fully by a rounding difference of the decimals. In order to find the origin of the different outputs, we looked into the data used by the authors for their SSPS analysis. We noticed a difference in the amount of missing values(NA) between the raw data and the data used in their SSPS analysis, which will be elaborated on in the preregistration section. 
 It is likely that the researcher handled the missing values in a  way that wasn’t reported in the paper, making it hard for us to fully replicate the results without any differences. Furthermore, the way the variables were coded in an ambiguous manner, making it difficult to determine which specific variables were used in the models reported by the researchers. Overall, there was a lack of clarity in crucial data processing steps such as missing values and variable identification. 
 
-``` {r Model driven multiverse}
+``` {r Model_driven_multiverse, cache = TRUE}
 
 #  To use higher ordder linear models
 #  fit.quad <- gvlma(weight~poly(dayTime,2,raw=TRUE), data=new.data)
@@ -286,6 +303,7 @@ model.combinations.d <- matrix(nrow = 16, ncol = model.combinations)
 for (i in 1:model.combinations){
   
   bit.code <- as.integer(intToBits(i-1))[1:3]
+  this.data <- data
   model.tmp <- table.maker(data = this.data, add.gender = bit.code[1], add.ethnic = bit.code[2], add.ses = bit.code[3], digits = 9)
   model.combinations.p[,i] <- model.tmp[,5]
   model.combinations.d[,i] <- model.tmp[,6]
@@ -306,7 +324,7 @@ p.values.avg.6 <- mean(model.combinations.p[6, ])
 ```
 
 
-```{r Data driven multiverse}
+```{r Data_driven_multiverse, cache=T}
 #  To use higher ordder linear models
 #  fit.quad <- gvlma(weight~poly(dayTime,2,raw=TRUE), data=new.data)
 
@@ -322,7 +340,7 @@ data.combinations.p <- matrix(nrow = 16, ncol = data.combinations)
 data.combinations.d <- matrix(nrow = 16, ncol = data.combinations)
 
 # Uncomment these lines after you have run it once, and you want to work on the code, otherwise you'll have to wait a while
-tic()
+mytic <- tic()
 for (i in 1:data.combinations){
   
   bit.code <- as.integer(intToBits(i-1))[1:6]
@@ -332,7 +350,7 @@ for (i in 1:data.combinations){
   data.combinations.d[,i] <- model.tmp[,6]
   print(i)
 }
-toc()
+mytac <- toc()
 
 
 xlim.d <- c(0,1)
@@ -345,7 +363,7 @@ p.values.5 <- sum(data.combinations.p[5, ] <0.01)
 p.values.6 <- sum(data.combinations.p[6, ] <0.01)
 
 relative.frequency <- p.values.6/64
-relative.frequency
+#relative.frequency
 
 #library(DataExplorer)
 #create_report(clean)
