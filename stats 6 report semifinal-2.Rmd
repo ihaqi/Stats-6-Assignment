@@ -261,7 +261,6 @@ table.controlled <- table.maker(clean, add.gender=T, add.ethnic=T, add.ses=T, ag
 table.uncontrolled.kable <- kable(table.uncontrolled, caption = "Table.1 Unadjusted models" )
 
 ```
-apa_table(x = table.uncontrolled, caption = "Unadjusted models", note = "This table contains statistics pertaining to our replication of the original adjusted models.", small = TRUE)
 
 Following the steps described by the authors we start the exploratory data analysis by creating regression models of all four types of digital activities consisting of both linear and quadratic components, next we extracted all the important value( _SD_, _P_-values, _β_, Confidence intervals and Cohen’s _d_)    out of the models and created two tables ,the first table contains the outcome of the models without taking into account the control variables described in the paper, namely gender ,ethnicity and Socio Economical Status. The second table contains the outcomes of the models with the control variables (See tables below)
 

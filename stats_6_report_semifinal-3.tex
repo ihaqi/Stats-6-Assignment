@@ -381,7 +381,7 @@ processing steps such as missing values and variable identification.
 \end{verbatim}
 
 \begin{verbatim}
-## 39.73 sec elapsed
+## 37.89 sec elapsed
 \end{verbatim}
 
 \hypertarget{multiverse-analysis}{%
@@ -414,44 +414,45 @@ first level was maintained due to reasonability concerns. This resulted
 in a multiverse consisting of \(2^6 = 64\) possible codings of the
 variable. We then examined the distribution of the p and d values
 resulting from applying the full model, thus including all control
-variables, to the different data sets. Two models had diverse
-distributions of p values. Specifically, the distributions of p values
-of the purely linear model of weekday game usage resulted in the
-histogram in Figure~@ref(fig:Hist.datadriven.5)
+variables, to the different data sets.
 
 \begin{figure}
 
-{\centering \includegraphics{stats_6_report_semifinal-3_files/figure-latex/Hist.datadriven.5-1} 
+{\centering \includegraphics{stats_6_report_semifinal-3_files/figure-latex/Histdatadriven5-1} 
 
 }
 
-\caption{papaja's APA6 template is available through the RStudio menues.}(\#fig:Hist.datadriven.5)
+\caption{papaja's APA6 template is available through the RStudio menues.}\label{fig:Histdatadriven5}
+\end{figure}
+
+Two models had diverse distributions of p values. Specifically, the
+distributions of p values of the purely linear model of weekday game
+usage resulted in the histogram in Figure~\ref{fig:Histdatadriven5}
+
+\begin{figure}
+
+{\centering \includegraphics{stats_6_report_semifinal-3_files/figure-latex/Histdatadriven6-1} 
+
+}
+
+\caption{papaja's APA6 template is available through the RStudio menues.}\label{fig:Histdatadriven6}
 \end{figure}
 
 The distributions of p values of the linear+quadratic model of weekday
 game usage resulted in the histogram in
-Figure~@ref(fig:Hist.datadriven.5).
-
-\begin{figure}
-
-{\centering \includegraphics{stats_6_report_semifinal-3_files/figure-latex/Hist.datadriven.6-1} 
-
-}
-
-\caption{papaja's APA6 template is available through the RStudio menues.}(\#fig:Hist.datadriven.6)
-\end{figure}
+Figure~\ref{fig:Histdatadriven5}.
 
 It is interesting to see the multiverse-frequency of p values below the
 significance threshold of \(\alpha = .001\) given by the researchers. We
 find that, for this model, the multiverse encapsulating all possible
 researcher choices in variable coding only results in a significant
-value for this model in 1\% of the cases. For all other cases, the p
+value for this model in \(1\%\) of the cases. For all other cases, the p
 values of the models seem reasonable. However, we obtain a different p
 value than the authors when using the full model on the subset of the
 data multiverse used by the authors. Specifically, we find a p value of
-p = 0.08 for the linear model describing weekday game usage, compaired
-to the \(p = 0.059\) authors. These differences, along with the
-difference in regression parameters reported above, can likely be
+\(p = 0.08\) for the linear model describing weekday game usage,
+compaired to the \(p = 0.059\) authors. These differences, along with
+the difference in regression parameters reported above, can likely be
 ascribed to the ambiguities mentioned throughout the paper.
 
 \hypertarget{preregistration}{%

@@ -40,7 +40,7 @@ mask              : no
 class             : "man"
 output            : papaja::apa6_pdf
 ---
-```{r load_packages and set-up, include = FALSE}
+```{r load_packages and set-up, include = FALSE, cache = TRUE}
 
 devtools::install_github("crsh/papaja")
 list.of.packages <- c("papaja", "knitr", "haven", "gvlma", "tidyr", "Rmisc","lattice","tictoc")
@@ -65,7 +65,7 @@ from.sav <- read_sav("data.sav")
 clean.csv <- as.data.frame(na.omit(from.csv))
 clean.sav <- as.data.frame(na.omit(from.sav))
 
-clean <- clean.csv
+clean <- clean.sav
 
 L <- list("watch_wd","watch_wd_sq","watch_we", "watch_we_sq", "play_wd", "play_wd_sq", "play_we", "play_we_sq", "comp_wd", "comp_wd_sq","comp_we", "comp_we_sq", "sp_wd", "sp_wd_sq", "sp_we", "sp_we_sq")
 
@@ -262,7 +262,7 @@ table.uncontrolled.kable <- kable(table.uncontrolled, caption = "Table.1 Unadjus
 
 ```
 
-Following the steps described by the authors we start the exploratory data analysis by creating regression models of all four types of digital activities consisting of both linear and quadratic components, next we extracted all the important value( _SD_, _P_-values, _β_, Confidence intervals and Cohen’s _d_)    out of the models and created two tables ,the first table contains the outcome of the models without taking into account the control variables described in the paper, namely gender ,ethnicity and Socio Economical Status. The second table contains the outcomes of the models with the control variables (See tables below)
+Following the steps described by the authors we start the exploratory data analysis by creating regression models of all four types of digital activities consisting of both linear and quadratic components, next we extracted all the important value( _SD_, _P_-values, _$\beta$_, Confidence intervals and Cohen’s _d_)    out of the models and created two tables ,the first table contains the outcome of the models without taking into account the control variables described in the paper, namely gender ,ethnicity and Socio Economical Status. The second table contains the outcomes of the models with the control variables (See tables below)
 
 ```{r, results = "asis"}
 apa_table(x = table.controlled, caption = "Adjusted models", note = "This table contains statistics pertaining to our replication of the original unadjusted models.", escape = TRUE)
@@ -278,18 +278,10 @@ example4 <- table.controlled[5, 1]
 ```
 
 ### Reproducibility analysis
-Although we were able to extract all the important statistics from the raw data without too many issues, notice that some of our values are different from those reported in Przybylski and Weinstein (2017). Specifically, we noticed two types of differences in both tables , the first type are small one decimal differences, for example, in our replication of their analysis we obtain a β value of $\beta$ =`r example1` for the linear component of the variable “watching films and tv programs in weekdays”, whereas in their paper the authors reports  a value of $\beta$=.98, we see this occur not only for β but for other values too, such as the standard deviation of the linear component of the variable “time spent playing games” (our $SD$ =`r example2` vs their  $SD =.11$ ), in the same model we obtain a $cohens'd$ value of `r example3`, compared to their $d$ value of 19. These small one decimal differences can be found in both tables, a potential explanation would be a differences in the rounding of the number. This explanation becomes less likely, however, once we take onto account the second type of difference we encountered. We found decimal differences exceeding one decimal, for example, in table 2 we observe a $\beta$ =`r example4` for the linear component of “playing games in the weekdays” vs  $\beta$ =.21 reported in the paper. These multi-decimal differences can’t be explain fully by a rounding difference of the decimals. In order to find the origin of the different outputs, we looked into the data used by the authors for their SSPS analysis. We noticed a difference in the amount of missing values (NA) between the raw data and the data used in their SSPS analysis, which will be elaborated on in the preregistration section. 
+Although we were able to extract all the important statistics from the raw data without too many issues, notice that some of our values are different from those reported in Przybylski and Weinstein (2017). Specifically, we noticed two types of differences in both tables , the first type are small one decimal differences, for example, in our replication of their analysis we obtain a $\beta$ value of $\beta =`r example1`$ for the linear component of the variable “watching films and tv programs in weekdays”, whereas in their paper the authors reports  a value of $\beta=0.98$, we see this occur not only for $\beta$ but for other values too, such as the standard deviation of the linear component of the variable “time spent playing games” (our $SD =`r example2`$ vs their  $SD =0.11$), in the same model we obtain a $cohens'd$ value of `r example3`, compared to their $d$ value of 19. These small one decimal differences can be found in both tables, a potential explanation would be a differences in the rounding of the number. This explanation becomes less likely, however, once we take onto account the second type of difference we encountered. We found decimal differences exceeding one decimal, for example, in table 2 we observe a $\beta =`r example4`$ for the linear component of “playing games in the weekdays” vs  $\beta =0.21$ reported in the paper. These multi-decimal differences can’t be explain fully by a rounding difference of the decimals. In order to find the origin of the different outputs, we looked into the data used by the authors for their SSPS analysis. We noticed a difference in the amount of missing values (NA) between the raw data and the data used in their SSPS analysis, which will be elaborated on in the preregistration section. 
 It is likely that the researcher handled the missing values in a  way that wasn’t reported in the paper, making it hard for us to fully replicate the results without any differences. Furthermore, the way the variables were coded in an ambiguous manner, making it difficult to determine which specific variables were used in the models reported by the researchers. Overall, there was a lack of clarity in crucial data processing steps such as missing values and variable identification. 
 
 ``` {r Model_driven_multiverse, cache = TRUE}
-
-#  To use higher ordder linear models
-#  fit.quad <- gvlma(weight~poly(dayTime,2,raw=TRUE), data=new.data)
-
-b <- as.integer(intToBits(13))
-
-
-cc <- recoder(clean, minority.code=c(b[1],b[2],b[3],b[4],b[5]))
 
 # making difefrent combinations of models
 
@@ -349,8 +341,8 @@ for (i in 1:data.combinations){
   model.tmp <- table.maker(data = this.data, add.gender = T, add.ethnic = T, add.ses = T, digits = 5)
   data.combinations.p[,i] <- model.tmp[,5]
   data.combinations.d[,i] <- model.tmp[,6]
-  
-  print(i)}
+  #print(i)
+  }
 
  mytac <- toc()
 
@@ -400,18 +392,20 @@ We found that, by manipulating the variables included in the models in 8 differe
 #### Data Driven Multiverse
 
 We took into account different combinations of possible coding strategies that could have been used by the researchers, in an approach akin to Steegen, Tuerlinckx, Gelman & Vanpaemel (2016). For the recoding of the categorical variable "ethnicity", we allowed each level but "white" to be recoded into the binary variable "minority". The same was done for the categorical variable "deprived", although similarly to the previous recoding, the first level was maintained due to reasonability concerns. This resulted in a multiverse consisting of $2^6 = 64$ possible codings of the variable. We then examined the distribution of the p and d values resulting from applying the full model, thus including all control variables, to the different data sets.
-Two models had diverse distributions of p values. Specifically, the distributions of p values of the purely linear model of weekday game usage resulted in the histogram in Figure\ \@ref(fig:Hist.datadriven.5)
-```{r Hist.datadriven.5, fig.cap = "papaja's APA6 template is available through the RStudio menues.", fig.align = "center"}
-plot(Hist.datadriven.5)
+
+```{r Histdatadriven5, fig.cap = "papaja's APA6 template is available through the RStudio menues.", fig.align = "center"}
+Hist.datadriven.5
 ```
 
-The distributions of p values of the linear+quadratic model of weekday game usage resulted in the histogram in Figure\ \@ref(fig:Hist.datadriven.5).
+Two models had diverse distributions of p values. Specifically, the distributions of p values of the purely linear model of weekday game usage resulted in the histogram in Figure\ \@ref(fig:Histdatadriven5)
 
-```{r Hist.datadriven.6, fig.cap = "papaja's APA6 template is available through the RStudio menues.", fig.align = "center"}
-plot(Hist.datadriven.6)
+```{r Histdatadriven6, fig.cap = "papaja's APA6 template is available through the RStudio menues.", fig.align = "center"}
+Hist.datadriven.6
 ```
 
-It is interesting to see the multiverse-frequency of p values below the significance threshold of $\alpha = .001$ given by the researchers. We find that, for this model, the multiverse encapsulating all possible researcher choices in variable coding only results in a significant value for this model in `r signif(relative.frequency,2)`% of the cases. For all other cases, the p values of the models seem reasonable. However, we obtain a different p value than the authors when using the full model on the subset of the data multiverse used by the authors. Specifically, we find a p value of p = `r data.combinations.p[5,1]` for the linear model describing weekday game usage, compaired to the $p = 0.059$ authors. These differences, along with the difference in regression parameters reported above, can likely be ascribed to the ambiguities mentioned throughout the paper. 
+The distributions of p values of the linear+quadratic model of weekday game usage resulted in the histogram in Figure\ \@ref(fig:Histdatadriven5).
+
+It is interesting to see the multiverse-frequency of p values below the significance threshold of $\alpha = .001$ given by the researchers. We find that, for this model, the multiverse encapsulating all possible researcher choices in variable coding only results in a significant value for this model in $`r signif(relative.frequency,2)`\%$ of the cases. For all other cases, the p values of the models seem reasonable. However, we obtain a different p value than the authors when using the full model on the subset of the data multiverse used by the authors. Specifically, we find a p value of $p = `r data.combinations.p[5,1]`$ for the linear model describing weekday game usage, compaired to the $p = 0.059$ authors. These differences, along with the difference in regression parameters reported above, can likely be ascribed to the ambiguities mentioned throughout the paper.
 
 
 
