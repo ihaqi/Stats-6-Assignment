@@ -340,7 +340,7 @@ data <- clean
 data.combinations.p <- matrix(nrow = 16, ncol = data.combinations)
 data.combinations.d <- matrix(nrow = 16, ncol = data.combinations)
 
-# Uncomment these lines after you have run it once, and you want to work on the code, otherwise you'll have to wait a while
+# Uncomment these lines after you have run it once, and you want to work on the code, otherwise youll have to wait a while
 mytic <- tic()
 for (i in 1:data.combinations){
   
@@ -349,11 +349,12 @@ for (i in 1:data.combinations){
   model.tmp <- table.maker(data = this.data, add.gender = T, add.ethnic = T, add.ses = T, digits = 5)
   data.combinations.p[,i] <- model.tmp[,5]
   data.combinations.d[,i] <- model.tmp[,6]
-  print(i)
-}
-mytac <- toc()
+  
+  print(i)}
 
+ mytac <- toc()
 
+# P values
 xlim.d <- c(0,1)
 ylim.d <- c(0,50)
 
@@ -364,7 +365,29 @@ p.values.5 <- sum(data.combinations.p[5, ] <0.01)
 p.values.6 <- sum(data.combinations.p[6, ] <0.01)
 
 relative.frequency <- p.values.6/64
-#relative.frequency
+# D values
+colors = rainbow(16)
+
+l<-as.numeric(as.list(data.combinations.d[1,]))
+plot(ecdf(l))
+
+pname <- c()
+ll <- c()
+for(i in 1:16){
+  ll[i]<-as.numeric(as.list((data.combinations.d[i,])))
+}
+
+for(i in 1:16){
+  l<-as.numeric(as.list((data.combinations.d[i,])))
+  pname[i] <- lines(ecdf(l) ,col = colors(i))
+}
+
+plot(ecdf(ll[1]), xlab = " d values", ylab = "cumulative d values" )
+
+for(i in 1:16){
+  l<-(as.list(as.numeric((data.combinations.d[i,]))))
+  plot(ecdf(l[i, ]) ,col = colors(i), add = TRUE)
+}
 
 #library(DataExplorer)
 #create_report(clean)
