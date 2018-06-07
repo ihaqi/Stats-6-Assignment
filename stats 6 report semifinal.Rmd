@@ -1,5 +1,5 @@
-<<<<<<< HEAD:stats 6 report semifinal.Rmd
 ---
+title             : "Assigment Statistics 6"
 shorttitle        : "Reproducibility Report"
 
 author: 
@@ -30,11 +30,11 @@ wordcount         : "X"
 
 bibliography      : ["r-references.bib"]
 
-figsintext        : no
+figsintext        : yes
 figurelist        : no
-tablelist         : no
+tablelist         : yes
 footnotelist      : no
-lineno            : yes
+lineno            : no
 mask              : no
 
 class             : "man"
