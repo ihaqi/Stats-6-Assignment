@@ -1,0 +1,20 @@
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+
+{\centering \includegraphics{stats_6_report_semifinal-3_files/figure-latex/plotpfirst-1}
+
+}
+
+\caption{Distribution of P values for different combinations of data for the linear component of the regression model of game play on the weekdays. Note that the curve does not represent the true probability distribution of the p values.}\label{fig:plotpfirst}
+\end{figure*}
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+
+{\centering \includegraphics{stats_6_report_semifinal-3_files/figure-latex/plotpsecond-1}
+
+}
+
+\caption{Distribution of P values for different combinations of data for the linear component of the regression model of smartphone usage on weekdays. Note that the curve does not represent the true probability distribution of the p values.}\label{fig:plotpsecond}
+\end{figure*}

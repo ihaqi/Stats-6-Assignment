@@ -1,4 +1,4 @@
-\documentclass[floatsintext,man]{apa6}
+\documentclass[man]{apa6}
 
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
@@ -39,6 +39,12 @@
   {\begin{landscape}\begin{center}\begin{ThreePartTable}}
   {\end{ThreePartTable}\end{center}\end{landscape}}
 
+  \usepackage{ifthen} % Only add declarations when endfloat package is loaded
+  \ifthenelse{\equal{\string man}{\string man}}{%
+   \DeclareDelayedFloatFlavor{ThreePartTable}{table} % Make endfloat play with longtable
+   % \DeclareDelayedFloatFlavor{ltable}{table} % Make endfloat play with lscape
+   \DeclareDelayedFloatFlavor{lltable}{table} % Make endfloat play with lscape & longtable
+  }{}%
 
 
 
@@ -58,15 +64,6 @@
 \endgroup}
 
 
-  \usepackage{graphicx}
-  \makeatletter
-  \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
-  \def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
-  \makeatother
-  % Scale images if necessary, so that they will not overflow the page
-  % margins by default, and it is still possible to overwrite the defaults
-  % using explicit options in \includegraphics[width, height, ...]{}
-  \setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 \ifxetex
   \usepackage[setpagesize=false, % page size defined by xetex
               unicode=false, % unicode breaks when used with xetex
@@ -118,8 +115,15 @@
     \vspace{0.5cm}
           \textsuperscript{1} r0292033\\
           \textsuperscript{2} r0607671\\
-          \textsuperscript{3} r0446864  }
+          \textsuperscript{3} r0446864\\
+          \textsuperscript{} Faculty of Psychology and Educational Sciences, KU Leuven.  }
 
+  \authornote{
+    Correspondence concerning this article should be addressed to
+    MohammadHossein Haqiqatkhah, Psichological Institute, Tiensestraat 102,
+    3000 Leuven, Belgium. E-mail:
+    \href{mailto:mh.haqiqatkhah@student.kuleuven.be}{\nolinkurl{mh.haqiqatkhah@student.kuleuven.be}}
+  }
 
 
       \keywords{\\
@@ -128,13 +132,6 @@
     }
   
 
-\usepackage[titles]{tocloft}
-\cftpagenumbersoff{table}
-\renewcommand{\cfttabpresnum}{\itshape\tablename\enspace}
-\renewcommand{\cfttabaftersnum}{.\space}
-\setlength{\cfttabindent}{0pt}
-\setlength{\cftafterloftitleskip}{0pt}
-\settowidth{\cfttabnumwidth}{Table 10.\qquad}
 
 
 
@@ -202,13 +199,12 @@ models and created two tables ,the first table contains the outcome of
 the models without taking into account the control variables described
 in the paper, namely gender ,ethnicity and Socio Economical Status. The
 second table contains the outcomes of the models with the control
-variables (See tables below)
+variables (See tables below).
 
 \begin{table}[tbp]
 \begin{center}
 \begin{threeparttable}
 \caption{\label{tab:unnamed-chunk-1}Unadjusted models}
-\small{
 \begin{tabular}{lllllll}
 \toprule
  & \multicolumn{1}{c}{b} & \multicolumn{1}{c}{SE} & \multicolumn{1}{c}{CI(2.5\%)} & \multicolumn{1}{c}{CI(97.5\%)} & \multicolumn{1}{c}{p} & \multicolumn{1}{c}{d}\\
@@ -232,7 +228,6 @@ Smatphone Weekend Quadratic & -0.10 & 0.01 & -0.11 & -0.08 & 0.00 & 0.08\\
 \bottomrule
 \addlinespace
 \end{tabular}
-}
 \begin{tablenotes}[para]
 \textit{Note.} This table contains statistics pertaining to our replication of the original adjusted models.
 \end{tablenotes}
@@ -312,22 +307,6 @@ variables were used in the models reported by the researchers. Overall,
 there was a lack of clarity in crucial data processing steps such as
 missing values and variable identification.
 
-\begin{figure}
-\centering
-\includegraphics{stats_6_report_semifinal-3_files/figure-latex/plot_p_first-1.pdf}
-\caption{(\#fig:plot\_p\_first)Distribution of P values for different
-combinations of data for the linear component of the regression model of
-weekday game play}
-\end{figure}
-
-\begin{figure}
-\centering
-\includegraphics{stats_6_report_semifinal-3_files/figure-latex/plot_p_second-1.pdf}
-\caption{(\#fig:plot\_p\_second)Distribution of P values for different
-combinations of data for the linear component of the regression model of
-linear weekday smartphone usage}
-\end{figure}
-
 \hypertarget{multiverse-analysis}{%
 \subsubsection{Multiverse Analysis}\label{multiverse-analysis}}
 
@@ -361,27 +340,46 @@ variable. We then examined the distribution of the p and d values
 resulting from applying the full model, thus including all control
 variables, to the different data sets.
 
-Two models had diverse distributions of p values. Specifically, the
-distributions of p values of the linear component of the regression
-model of weekday game play resulted in the histogram in
-Figure~@ref(fig:plot\_p\_first)
+Two models had diverse distributions of p values; Specifically, linear
+component of the regression model for variables of game play and
+smartphone usage in the weekdays. The distributions of p values for
+these models are ploted in Figure ~\ref{fig:plotpfirst} and
+~\ref{fig:plotpsecond} respectively. Please note that the plots' axes
+scales defer in the figures. Also note that although the p values are
+correctly shown in the figures by vertical lines, the curves do not
+represent the \enquote{actual} probability distribution of the p values;
+they are rather an approximate for the corresponding histograms.
 
-The distributions of p values of the linear component of the regression
-model of weekday smartphone usage resulted in the histogram in
-Figure~@ref(fig:plot\_p\_second).
+\begin{figure}
 
-It is interesting to see the multiverse-frequency of p values below the
-significance threshold of \(\alpha = .001\) given by the researchers. We
-find that, for this model, the multiverse encapsulating all possible
-researcher choices in variable coding only results in a significant
-value for this model in \(0.47\%\) of the cases. For all other cases,
-the p values of the models seem reasonable. However, we obtain a
-different p value than the authors when using the full model on the
-subset of the data multiverse used by the authors. Specifically, we find
-a p value of \(p = 0.08\) for the linear model describing weekday game
-play, compaired to the \(p = 0.059\) authors. These differences, along
-with the difference in regression parameters reported above, can likely
-be ascribed to the ambiguities mentioned throughout the paper.
+{\centering \includegraphics{stats_6_report_semifinal-3_files/figure-latex/plotpfirst-1} 
+
+}
+
+\caption{Distribution of P values for different combinations of data for the linear component of the regression model of game play on the weekdays. Note that the curve does not represent the true probability distribution of the p values.}\label{fig:plotpfirst}
+\end{figure}
+\begin{figure}
+
+{\centering \includegraphics{stats_6_report_semifinal-3_files/figure-latex/plotpsecond-1} 
+
+}
+
+\caption{Distribution of P values for different combinations of data for the linear component of the regression model of smartphone usage on weekdays. Note that the curve does not represent the true probability distribution of the p values.}\label{fig:plotpsecond}
+\end{figure}
+
+Interestingly, we find that p values corresponding to the linear
+component of the regression model for weekday smartphone use is
+significant (for a significance threshold of \(\alpha = 0.01\)) only for
+\(0.47\%\) of the multiverse encapsulating all possible researcher
+choices in variable coding. This percent drops to \(0\%\) for the linear
+component of weekday game play. It is worth mentioning that for all
+other models we do not observe any noticable change in the p values.
+Please note that the significance threshold was originally suggested as
+\(\alpha = 0.001\) in the paper. However, since this conservative
+threshold resulted in zero multiverse-frequencies, we increased it to
+\(\alpha = 0.01\). These differences, along with the difference in
+regression parameters reported above, can likely be ascribed to the
+ambiguities mentioned throughout the paper.
 
 \hypertarget{preregistration}{%
 \subsubsection{Preregistration}\label{preregistration}}
@@ -453,9 +451,6 @@ Increasing transparency through a multiverse analysis.
 \endgroup
 
 
-\clearpage
-\renewcommand{\listtablename}{Table captions}
-\listoftables
 
 
 
