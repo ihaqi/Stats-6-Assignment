@@ -137,7 +137,7 @@
 
       \keywords{\\
 
-      \indent  X
+      \indent  1613
     }
   
 
@@ -203,8 +203,8 @@ during weekdays (see, Przybylski and Weinstein (2017), Figure 1).
 Following the steps described by the authors we start the exploratory
 data analysis by creating regression models of all four types of digital
 activities consisting of both linear and quadratic components, next we
-extracted all the important value (\emph{SD}, \emph{p}-values,
-\emph{\(\beta\)}, Confidence intervals and Cohen's \emph{d}) out of the
+extracted all the important values (\emph{\(SD\)}, \emph{\(p\)}-values,
+\emph{\(\beta\)}, confidence intervals, and \emph{Cohen's d}) out of the
 models and created two tables ,the first table contains the outcome of
 the models without taking into account the control variables described
 in the paper, namely gender, ethnicity and Socio-Economical Status
@@ -294,28 +294,28 @@ replication of their analysis we obtain a \(\beta\) value of
 paper the authors reports a value of \(\beta=0.98\), we see this occur
 not only for \(\beta\) but for other values too, such as the standard
 deviation of the linear component of the variable \enquote{time spent
-playing games} (our \(SD =0.12\) vs their \(SD =0.11\)), in the same
-model we obtain a \(cohens'd\) value of 0.20, compared to their \(d\)
-value of 19. These small one decimal differences can be found in both
-tables, a potential explanation would be a differences in the rounding
-of the number. This explanation becomes less likely, however, once we
-take onto account the second type of difference we encountered. We found
-decimal differences exceeding one decimal, for example, in table 2 we
-observe a \(\beta =0.27\) for the linear component of \enquote{playing
-games in the weekdays} vs \(\beta =0.21\) reported in the paper. These
-multi-decimal differences can't be explain fully by a rounding
-difference of the decimals. In order to find the origin of the different
-outputs, we looked into the data used by the authors for their SPSS
-analysis. We noticed a difference in the amount of missing values (NA)
-between the raw data and the data used in their SPSS analysis, which
-will be elaborated on in the preregistration section. It is likely that
-the researcher handled the missing values in a way that wasn't reported
-in the paper, making it hard for us to fully replicate the results
-without any differences. Furthermore, the way the variables were coded
-in an ambiguous manner, making it difficult to determine which specific
-variables were used in the models reported by the researchers. Overall,
-there was a lack of clarity in crucial data processing steps such as
-missing values and variable identification.
+playing games} (our \(SD =0.12\) vs.~their \(SD =0.11\)), in the same
+model we obtain a Cohen's \(d\) of \(0.20\), compared to their \(d\)
+value of \(0.19\). These small one decimal differences can be found in
+both tables, a potential explanation would be a differences in the
+rounding of the number. This explanation becomes less likely, however,
+once we take onto account the second type of difference we encountered.
+We found decimal differences exceeding one decimal, for example, in
+table 2 we observe a \(\beta =0.27\) for the linear component of
+\enquote{playing games in the weekdays} vs \(\beta =0.21\) reported in
+the paper. These multi-decimal differences can't be explain fully by a
+rounding difference of the decimals. In order to find the origin of the
+different outputs, we looked into the data used by the authors for their
+SPSS analysis. We noticed a difference in the amount of missing values
+(NA) between the raw data and the data used in their SPSS analysis,
+which will be elaborated on in the preregistration section. It is likely
+that the researcher handled the missing values in a way that wasn't
+reported in the paper, making it hard for us to fully replicate the
+results without any differences. Furthermore, the way the variables were
+coded in an ambiguous manner, making it difficult to determine which
+specific variables were used in the models reported by the researchers.
+Overall, there was a lack of clarity in crucial data processing steps
+such as missing values and variable identification.
 
 \hypertarget{multiverse-analysis}{%
 \subsubsection{Multiverse Analysis}\label{multiverse-analysis}}
@@ -333,9 +333,10 @@ during the week. The only variable underlying this difference was
 \enquote{gender}. Including the control variable of gender, regardless
 of any other combination of variables, shifted the average p value of
 the three mentioned components by 0.06, 0.01, and 0.14, respectively.
-For better insight about the the significance and effect size across the
-model driven multiverse, see Figure \ref{fig:heat-p-model} and
-\ref{fig:heat-d-model}.
+This finding is evident in Figure \ref{fig:heat-p-model} and
+\ref{fig:heat-d-model}: the key role of gender as a control variables is
+reflected on the heat maps as the the odd and even columns are virtually
+the same.
 
 \hypertarget{data-driven-multiverse}{%
 \paragraph{Data Driven Multiverse}\label{data-driven-multiverse}}
@@ -344,14 +345,16 @@ We took into account different combinations of possible coding
 strategies that could have been used by the researchers, in an approach
 akin to Steegen, Tuerlinckx, Gelman, and Vanpaemel (2016). For the
 recoding of the categorical variable \enquote{ethnicity}, we allowed
-each level but \enquote{white} to be recoded into the binary variable
+each level but \enquote{white} to be coded into the binary variable
 \enquote{minority}. The same was done for the categorical variable
-\enquote{deprived}, although similar to the previous recoding, the first
-level was maintained due to reasonability concerns. This resulted in a
-multiverse consisting of \(2^6 = 64\) possible codings of the variable.
-We then examined the distribution of the p and d values resulting from
-applying the full model, thus including all control variables, to the
-different data sets.
+\enquote{deprived}, although similar to the previous coding, the first
+level was maintained due to reasonability concerns. Gender (which was
+coded into \enquote{male} in the original paper) was already a binary
+variable hence was not considered in the data driven multiverse. This
+resulted in a multiverse consisting of \(2^6 = 64\) possible codings of
+the variable. We then examined the distribution of the \emph{p} and
+\emph{d} values resulting from applying the full model, thus including
+all control variables, to the different datasets.
 
 Two models had diverse distributions of \emph{p} values; Specifically,
 linear component of the regression model for variables of game play and
@@ -362,9 +365,18 @@ scales defer in the figures. Also note that although the \emph{p} values
 are correctly shown in the figures by vertical lines, the curves do not
 represent the \enquote{actual} probability distribution of the \emph{p}
 values; they are rather an approximate for the corresponding histograms.
-For better insight about the the significance and effect size across the
-data driven multiverse, see Figure \ref{fig:heat-p-data} and
-\ref{fig:heat-d-data}.
+For a more clear insight into the significance levels and effect sizes
+across the data driven multiverse, see the heat maps in Figure
+\ref{fig:heat-p-data} and \ref{fig:heat-d-data}. Figure
+\ref{fig:heat-p-data} confirm our observation about relatively lower
+significance of two regression models across the data driven multiverse.
+On top of that, Figure \ref{fig:heat-d-data} (together with Figure
+\ref{fig:heat-p-data}) roughly suggests that different coding
+combinations for minority and deprivation status do not influence the
+significance and effect size dramatically. This is in line with the
+outcome of the model driven multiverse analysis where we observed that
+the decision about controling for gender has a key influence on the
+regression models.
 
 \begin{figure}
 
@@ -385,22 +397,6 @@ data driven multiverse, see Figure \ref{fig:heat-p-data} and
 
 \begin{figure}
 \centering
-\includegraphics{stats_6_final_files/figure-latex/heat-p-data-1.pdf}
-\caption{\label{fig:heat-p-data}Heat map of p values for different choices
-of variable coding. Rows represents the coresponding rows in Table 1 and
-2 and each column is for one of the 64 different data combinations.}
-\end{figure}
-
-\begin{figure}
-\centering
-\includegraphics{stats_6_final_files/figure-latex/heat-d-data-1.pdf}
-\caption{\label{fig:heat-d-data}Heat map of Cohen's d for different choices
-of variable coding. Rows represents the coresponding rows in Table 1 and
-2 and each column is for one of the 64 different data combinations.}
-\end{figure}
-
-\begin{figure}
-\centering
 \includegraphics{stats_6_final_files/figure-latex/heat-p-model-1.pdf}
 \caption{\label{fig:heat-p-model}Heat map of p values for different
 decisions about inclusion/exclusion of control variables in the
@@ -417,6 +413,22 @@ decisions about inclusion/exclusion of control variables in the
 regression models. Rows represents the coresponding rows in Table 1 and
 2 and each column is for one of the 8 different inclusion/exclusion
 combinations.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{stats_6_final_files/figure-latex/heat-p-data-1.pdf}
+\caption{\label{fig:heat-p-data}Heat map of p values for different choices
+of variable coding. Rows represents the coresponding rows in Table 1 and
+2 and each column is for one of the 64 different data combinations.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{stats_6_final_files/figure-latex/heat-d-data-1.pdf}
+\caption{\label{fig:heat-d-data}Heat map of Cohen's d for different choices
+of variable coding. Rows represents the corresponding rows in Table 1
+and 2 and each column is for one of the 64 different data combinations.}
 \end{figure}
 
 Interestingly, we find that \emph{p} values corresponding to the linear
@@ -449,7 +461,7 @@ documents provided by the authors differ in the amount of NA data they
 contain. Where the .csv file contains 21837 rows with missing values,
 the .sav file contains 44642 rows with missing values. None of these
 inconsistencies were reported by the authors in the final paper, and it
-is unclear which data set the authors ultimately used in their analysis.
+is unclear which dataset the authors ultimately used in their analysis.
 The fact that the data are ambiguous is a major obstacle for replication
 analyses.
 

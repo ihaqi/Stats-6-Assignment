@@ -22,24 +22,6 @@
 \ifnextchar[{\eatarg}{}
 
 \centering
-\includegraphics{stats_6_final_files/figure-latex/heat-p-data-1.pdf}
-\caption{\label{fig:heat-p-data}Heat map of p values for different choices
-of variable coding. Rows represents the coresponding rows in Table 1 and
-2 and each column is for one of the 64 different data combinations.}
-\end{figure*}
-\begin{figure*}[hbt]
-\ifnextchar[{\eatarg}{}
-
-\centering
-\includegraphics{stats_6_final_files/figure-latex/heat-d-data-1.pdf}
-\caption{\label{fig:heat-d-data}Heat map of Cohen's d for different choices
-of variable coding. Rows represents the coresponding rows in Table 1 and
-2 and each column is for one of the 64 different data combinations.}
-\end{figure*}
-\begin{figure*}[hbt]
-\ifnextchar[{\eatarg}{}
-
-\centering
 \includegraphics{stats_6_final_files/figure-latex/heat-p-model-1.pdf}
 \caption{\label{fig:heat-p-model}Heat map of p values for different
 decisions about inclusion/exclusion of control variables in the
@@ -57,4 +39,22 @@ decisions about inclusion/exclusion of control variables in the
 regression models. Rows represents the coresponding rows in Table 1 and
 2 and each column is for one of the 8 different inclusion/exclusion
 combinations.}
+\end{figure*}
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+\centering
+\includegraphics{stats_6_final_files/figure-latex/heat-p-data-1.pdf}
+\caption{\label{fig:heat-p-data}Heat map of p values for different choices
+of variable coding. Rows represents the coresponding rows in Table 1 and
+2 and each column is for one of the 64 different data combinations.}
+\end{figure*}
+\begin{figure*}[hbt]
+\ifnextchar[{\eatarg}{}
+
+\centering
+\includegraphics{stats_6_final_files/figure-latex/heat-d-data-1.pdf}
+\caption{\label{fig:heat-d-data}Heat map of Cohen's d for different choices
+of variable coding. Rows represents the corresponding rows in Table 1
+and 2 and each column is for one of the 64 different data combinations.}
 \end{figure*}
