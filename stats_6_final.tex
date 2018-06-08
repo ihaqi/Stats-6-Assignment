@@ -82,7 +82,7 @@
 \fi
 \hypersetup{breaklinks=true,
             pdfauthor={},
-            pdftitle={Assigment Statistics 6},
+            pdftitle={Assignment Statistics 6},
             colorlinks=true,
             citecolor=blue,
             urlcolor=blue,
@@ -110,7 +110,7 @@
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 % Essential manuscript parts
-  \title{Assigment Statistics 6}
+  \title{Assignment Statistics 6}
 
   \shorttitle{Reproducibility Report}
 
@@ -169,14 +169,15 @@
 \hypertarget{introducion}{%
 \subsection{Introducion}\label{introducion}}
 
-This is a statistical report, based on (add citation) for the class of
-\emph{Statistics VI (Seminar on statistical analyses of psychological
-research data) {[}P0Q01a{]}}. As required by the guidelines of this
-project, this report will consist of three main parts, in which we will
-try to 1) Check the reproducibility status of the published results , 2)
-Check the robustness status of the confirmatory analyses and 3) Check
-the pre-registration status of the published results by comparing the
-pre-registered protocol to the published paper.
+This is a statistical report, based on Przybylski and Weinstein (2017)
+for the class of \emph{Statistics VI (Seminar on statistical analyses of
+psychological research data) {[}P0Q01a{]}}. As required by the
+guidelines of this project, this report will consist of three main
+parts, in which we will try to 1) Check the reproducibility status of
+the published results , 2) Check the robustness status of the
+confirmatory analyses and 3) Check the pre-registration status of the
+published results by comparing the pre-registered protocol to the
+published paper.
 
 \hypertarget{reproducibility}{%
 \subsection{Reproducibility}\label{reproducibility}}
@@ -187,14 +188,14 @@ pre-registered protocol to the published paper.
 To begin the replication portion of this report, we start by exploring
 the possibility of a monotonic relationship between digital screen-time
 and mental well-being as described by Przybylski and Weinstein (2017),
-We achieve this my making use of the Besyan Information Criterion (BIC)
-and comparing the simple linear models of all variables concerning
+We achieve this by making use of the Bayesian Information Criterion
+(BIC) and comparing the simple linear models of all variables concerning
 digital screen-time with their simple and quadratic counterparts. We
 found that for the models that controlled for confounding variables, the
 fit was greater for the models with both a linear and quadratic
 component. For the unadjusted models, we found one model of which the
-BIC index favoured a linear model alone. Specifically, for smartphone
-use during weekdays (see, Przybylski and Weinstein (2017), Figure 1).
+BIC index favored a linear model alone. Specifically, for smartphone use
+during weekdays (see, Przybylski and Weinstein (2017), Figure 1).
 
 \hypertarget{confirmatory-analysis}{%
 \subsubsection{Confirmatory analysis}\label{confirmatory-analysis}}
@@ -202,13 +203,13 @@ use during weekdays (see, Przybylski and Weinstein (2017), Figure 1).
 Following the steps described by the authors we start the exploratory
 data analysis by creating regression models of all four types of digital
 activities consisting of both linear and quadratic components, next we
-extracted all the important value (\emph{SD}, \emph{P}-values,
+extracted all the important value (\emph{SD}, \emph{p}-values,
 \emph{\(\beta\)}, Confidence intervals and Cohen's \emph{d}) out of the
 models and created two tables ,the first table contains the outcome of
 the models without taking into account the control variables described
-in the paper, namely gender ,ethnicity and Socio Economical Status. The
-second table contains the outcomes of the models with the control
-variables (See tables below).
+in the paper, namely gender, ethnicity and Socio-Economical Status
+(SES). The second table contains the outcomes of the models with the
+control variables (See tables below).
 
 \begin{table}[tbp]
 \begin{center}
@@ -304,9 +305,9 @@ observe a \(\beta =0.27\) for the linear component of \enquote{playing
 games in the weekdays} vs \(\beta =0.21\) reported in the paper. These
 multi-decimal differences can't be explain fully by a rounding
 difference of the decimals. In order to find the origin of the different
-outputs, we looked into the data used by the authors for their SSPS
+outputs, we looked into the data used by the authors for their SPSS
 analysis. We noticed a difference in the amount of missing values (NA)
-between the raw data and the data used in their SSPS analysis, which
+between the raw data and the data used in their SPSS analysis, which
 will be elaborated on in the preregistration section. It is likely that
 the researcher handled the missing values in a way that wasn't reported
 in the paper, making it hard for us to fully replicate the results
@@ -325,10 +326,10 @@ missing values and variable identification.
 We found that, by manipulating the variables included in the models in 8
 different ways (including/excluding each control variable
 \enquote{gender}, \enquote{ethnicity}, and \enquote{SES}) this
-multiverse of models resulted in different p values for only three
-component in two models: linear component of the weekday video game
-play, and both linear and quadratic components of smartphone use during
-the week. The only variable underlying this difference was
+multiverse of models resulted in different \emph{p} values for only
+three component in two models: linear component of the weekday video
+game play, and both linear and quadratic components of smartphone use
+during the week. The only variable underlying this difference was
 \enquote{gender}. Including the control variable of gender, regardless
 of any other combination of variables, shifted the average p value of
 the three mentioned components by 0.06, 0.01, and 0.14, respectively.
@@ -345,37 +346,41 @@ akin to Steegen, Tuerlinckx, Gelman, and Vanpaemel (2016). For the
 recoding of the categorical variable \enquote{ethnicity}, we allowed
 each level but \enquote{white} to be recoded into the binary variable
 \enquote{minority}. The same was done for the categorical variable
-\enquote{deprived}, although similarly to the previous recoding, the
-first level was maintained due to reasonability concerns. This resulted
-in a multiverse consisting of \(2^6 = 64\) possible codings of the
-variable. We then examined the distribution of the p and d values
-resulting from applying the full model, thus including all control
-variables, to the different data sets.
+\enquote{deprived}, although similar to the previous recoding, the first
+level was maintained due to reasonability concerns. This resulted in a
+multiverse consisting of \(2^6 = 64\) possible codings of the variable.
+We then examined the distribution of the p and d values resulting from
+applying the full model, thus including all control variables, to the
+different data sets.
 
-Two models had diverse distributions of p values; Specifically, linear
-component of the regression model for variables of game play and
-smartphone usage in the weekdays. The distributions of p values for
-these models are ploted in Figure \ref{fig:plotpfirst} and
+Two models had diverse distributions of \emph{p} values; Specifically,
+linear component of the regression model for variables of game play and
+smartphone usage in the weekdays. The distributions of \emph{p} values
+for these models are ploted in Figure \ref{fig:plotpfirst} and
 \ref{fig:plotpsecond} respectively. Please note that the plots' axes
-scales defer in the figures. Also note that although the p values are
-correctly shown in the figures by vertical lines, the curves do not
-represent the \enquote{actual} probability distribution of the p values;
-they are rather an approximate for the corresponding histograms. For
-better insight about the the significance and effect size across the
+scales defer in the figures. Also note that although the \emph{p} values
+are correctly shown in the figures by vertical lines, the curves do not
+represent the \enquote{actual} probability distribution of the \emph{p}
+values; they are rather an approximate for the corresponding histograms.
+For better insight about the the significance and effect size across the
 data driven multiverse, see Figure \ref{fig:heat-p-data} and
 \ref{fig:heat-d-data}.
 
 \begin{figure}
 
-\includegraphics{stats_6_final_files/figure-latex/plotpfirst-1} \hfill{}
+{\centering \includegraphics{stats_6_final_files/figure-latex/plotpfirst-1} 
 
-\caption{Distribution of P values for different combinations of data for the linear component of the regression model of game play on the weekdays. Note that the curve does not represent the true probability distribution of the p values.}\label{fig:plotpfirst}
+}
+
+\caption{Distribution of p values for different combinations of data for the linear component of the regression model of game play on the weekdays. Note that the curve does not represent the true probability distribution of the p values.}\label{fig:plotpfirst}
 \end{figure}
 \begin{figure}
 
-\includegraphics{stats_6_final_files/figure-latex/plotpsecond-1} \hfill{}
+{\centering \includegraphics{stats_6_final_files/figure-latex/plotpsecond-1} 
 
-\caption{Distribution of P values for different combinations of data for the linear component of the regression model of smartphone usage on weekdays. Note that the curve does not represent the true probability distribution of the p values.}\label{fig:plotpsecond}
+}
+
+\caption{Distribution of p values for different combinations of data for the linear component of the regression model of smartphone usage on weekdays. Note that the curve does not represent the true probability distribution of the p values.}\label{fig:plotpsecond}
 \end{figure}
 
 \begin{figure}
@@ -395,32 +400,38 @@ of variable coding. Rows represents the coresponding rows in Table 1 and
 \end{figure}
 
 \begin{figure}
-
-\includegraphics{stats_6_final_files/figure-latex/heat-p-model-1} \hfill{}
-
-\caption{Heat map of p values for different decisions about inclusion/exclusion of control variables in the regression models. Rows represents the coresponding rows in Table 1 and 2 and each column is for one of the 8 different inclusion/exclusion combinations.}\label{fig:heat-p-model}
+\centering
+\includegraphics{stats_6_final_files/figure-latex/heat-p-model-1.pdf}
+\caption{\label{fig:heat-p-model}Heat map of p values for different
+decisions about inclusion/exclusion of control variables in the
+regression models. Rows represents the coresponding rows in Table 1 and
+2 and each column is for one of the 8 different inclusion/exclusion
+combinations.}
 \end{figure}
 
 \begin{figure}
-
-\includegraphics{stats_6_final_files/figure-latex/heat-d-model-1} \hfill{}
-
-\caption{Heat map of Cohen's d for different decisions about inclusion/exclusion of control variables in the regression models. Rows represents the coresponding rows in Table 1 and 2 and each column is for one of the 8 different inclusion/exclusion combinations.}\label{fig:heat-d-model}
+\centering
+\includegraphics{stats_6_final_files/figure-latex/heat-d-model-1.pdf}
+\caption{\label{fig:heat-d-model}Heat map of Cohen's d for different
+decisions about inclusion/exclusion of control variables in the
+regression models. Rows represents the coresponding rows in Table 1 and
+2 and each column is for one of the 8 different inclusion/exclusion
+combinations.}
 \end{figure}
 
-Interestingly, we find that p values corresponding to the linear
+Interestingly, we find that \emph{p} values corresponding to the linear
 component of the regression model for weekday smartphone use is
 significant (for a significance threshold of \(\alpha = 0.01\)) only for
 \(0.47\%\) of the multiverse encapsulating all possible researcher
 choices in variable coding. This percent drops to \(0\%\) for the linear
 component of weekday game play. It is worth mentioning that for all
-other models we do not observe any noticable change in the p values.
-Please note that the significance threshold was originally suggested as
-\(\alpha = 0.001\) in the paper. However, since this conservative
-threshold resulted in zero multiverse-frequencies, we increased it to
-\(\alpha = 0.01\). These differences, along with the difference in
-regression parameters reported above, can likely be ascribed to the
-ambiguities mentioned throughout the paper.
+other models we do not observe any noticable change in the \emph{p}
+values. Please note that the significance threshold was originally
+suggested as \(\alpha = 0.001\) in the paper. However, since this
+conservative threshold resulted in zero multiverse-frequencies, we
+increased it to \(\alpha = 0.01\). These differences, along with the
+difference in regression parameters reported above, can likely be
+ascribed to the ambiguities mentioned throughout the paper.
 
 \hypertarget{preregistration}{%
 \subsubsection{Preregistration}\label{preregistration}}
@@ -443,11 +454,11 @@ The fact that the data are ambiguous is a major obstacle for replication
 analyses.
 
 The preregistration document stated that testing the displacement
-hypothesis was to be done by linear regression modelling, predicting
+hypothesis was to be done by linear regression modeling, predicting
 mental well-being through composite scores of screen time. The authors
 did not conduct these analyses. They explain that \enquote{Interocular}
 tests were sufficient to exclude this hypothesis. Although we only found
-one unadjusted model for which the BIC criterum favours a purely linear
+one unadjusted model for which the BIC criterium favors a purely linear
 model, this does allow one to question why the authors refrained from
 the formal hypothesis test detailed in the preregistration document.
 
@@ -465,7 +476,7 @@ because other codings of these variables are also present in the data.
 Although this is a minor issue, a more clear issue is also present. The
 authors noted in their deviations from analysis plan that the
 preregistered control variables of \enquote{whether parents married} and
-\enquote{whether native born}, they did not include the omission of
+\enquote{whether native-born}, they did not include the omission of
 these variables in the published article.
 
 \newpage

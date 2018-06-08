@@ -2,17 +2,21 @@
 \ifnextchar[{\eatarg}{}
 
 
-\includegraphics{stats_6_final_files/figure-latex/plotpfirst-1} \hfill{}
+{\centering \includegraphics{stats_6_final_files/figure-latex/plotpfirst-1}
 
-\caption{Distribution of P values for different combinations of data for the linear component of the regression model of game play on the weekdays. Note that the curve does not represent the true probability distribution of the p values.}\label{fig:plotpfirst}
+}
+
+\caption{Distribution of p values for different combinations of data for the linear component of the regression model of game play on the weekdays. Note that the curve does not represent the true probability distribution of the p values.}\label{fig:plotpfirst}
 \end{figure*}
 \begin{figure*}[hbt]
 \ifnextchar[{\eatarg}{}
 
 
-\includegraphics{stats_6_final_files/figure-latex/plotpsecond-1} \hfill{}
+{\centering \includegraphics{stats_6_final_files/figure-latex/plotpsecond-1}
 
-\caption{Distribution of P values for different combinations of data for the linear component of the regression model of smartphone usage on weekdays. Note that the curve does not represent the true probability distribution of the p values.}\label{fig:plotpsecond}
+}
+
+\caption{Distribution of p values for different combinations of data for the linear component of the regression model of smartphone usage on weekdays. Note that the curve does not represent the true probability distribution of the p values.}\label{fig:plotpsecond}
 \end{figure*}
 \begin{figure*}[hbt]
 \ifnextchar[{\eatarg}{}
@@ -35,16 +39,22 @@ of variable coding. Rows represents the coresponding rows in Table 1 and
 \begin{figure*}[hbt]
 \ifnextchar[{\eatarg}{}
 
-
-\includegraphics{stats_6_final_files/figure-latex/heat-p-model-1} \hfill{}
-
-\caption{Heat map of p values for different decisions about inclusion/exclusion of control variables in the regression models. Rows represents the coresponding rows in Table 1 and 2 and each column is for one of the 8 different inclusion/exclusion combinations.}\label{fig:heat-p-model}
+\centering
+\includegraphics{stats_6_final_files/figure-latex/heat-p-model-1.pdf}
+\caption{\label{fig:heat-p-model}Heat map of p values for different
+decisions about inclusion/exclusion of control variables in the
+regression models. Rows represents the coresponding rows in Table 1 and
+2 and each column is for one of the 8 different inclusion/exclusion
+combinations.}
 \end{figure*}
 \begin{figure*}[hbt]
 \ifnextchar[{\eatarg}{}
 
-
-\includegraphics{stats_6_final_files/figure-latex/heat-d-model-1} \hfill{}
-
-\caption{Heat map of Cohen's d for different decisions about inclusion/exclusion of control variables in the regression models. Rows represents the coresponding rows in Table 1 and 2 and each column is for one of the 8 different inclusion/exclusion combinations.}\label{fig:heat-d-model}
+\centering
+\includegraphics{stats_6_final_files/figure-latex/heat-d-model-1.pdf}
+\caption{\label{fig:heat-d-model}Heat map of Cohen's d for different
+decisions about inclusion/exclusion of control variables in the
+regression models. Rows represents the coresponding rows in Table 1 and
+2 and each column is for one of the 8 different inclusion/exclusion
+combinations.}
 \end{figure*}
