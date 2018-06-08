@@ -264,7 +264,7 @@ table.uncontrolled.kable <- kable(table.uncontrolled, caption = "Table.1 Unadjus
 
 ```
 
-Following the steps described by the authors we start the exploratory data analysis by creating regression models of all four types of digital activities consisting of both linear and quadratic components, next we extracted all the important value( _SD_, _P_-values, _$\beta$_, Confidence intervals and Cohen’s _d_)    out of the models and created two tables ,the first table contains the outcome of the models without taking into account the control variables described in the paper, namely gender ,ethnicity and Socio Economical Status. The second table contains the outcomes of the models with the control variables (See tables below).
+Following the steps described by the authors we start the exploratory data analysis by creating regression models of all four types of digital activities consisting of both linear and quadratic components, next we extracted all the important value (_SD_, _P_-values, _$\beta$_, Confidence intervals and Cohen’s _d_) out of the models and created two tables ,the first table contains the outcome of the models without taking into account the control variables described in the paper, namely gender ,ethnicity and Socio Economical Status. The second table contains the outcomes of the models with the control variables (See tables below).
 
 ```{r, results = "asis"}
 apa_table(x = table.uncontrolled, caption = "Unadjusted models", note = "This table contains statistics pertaining to our replication of the original adjusted models.")
@@ -371,7 +371,9 @@ We found that, by manipulating the variables included in the models in 8 differe
 
 We took into account different combinations of possible coding strategies that could have been used by the researchers, in an approach akin to @steegen2016increasing. For the recoding of the categorical variable "ethnicity", we allowed each level but "white" to be recoded into the binary variable "minority". The same was done for the categorical variable "deprived", although similarly to the previous recoding, the first level was maintained due to reasonability concerns. This resulted in a multiverse consisting of $2^6 = 64$ possible codings of the variable. We then examined the distribution of the p and d values resulting from applying the full model, thus including all control variables, to the different data sets.
 
-Two models had diverse distributions of p values; Specifically, linear component of the regression model for variables of game play and smartphone usage in the weekdays. The distributions of p values for these models are ploted in Figure \ \@ref(fig:plotpfirst) and \ \@ref(fig:plotpsecond) respectively. Please note that the plots' axes scales defer in the figures. Also note that although the p values are correctly shown in the figures by vertical lines, the curves do not represent the 'actual' probability distribution of the p values; they are rather an approximate for the corresponding histograms.
+Two models had diverse distributions of p values; Specifically, linear component of the regression model for variables of game play and smartphone usage in the weekdays. The distributions of p values for these models are ploted in Figure \@ref(fig:plotpfirst) and \@ref(fig:plotpsecond) respectively. Please note that the plots' axes scales defer in the figures. Also note that although the p values are correctly shown in the figures by vertical lines, the curves do not represent the 'actual' probability distribution of the p values; they are rather an approximate for the corresponding histograms. For a better 
+
+Figure \@ref(fig:heat-d-data)
 
 ```{r, plotpfirst, fig.cap = "Distribution of P values for different combinations of data for the linear component of the regression model of game play on the weekdays. Note that the curve does not represent the true probability distribution of the p values.", fig.align = "center"}
 ddd1 <- density(data.combinations.p[5,])
@@ -385,6 +387,50 @@ ydd <- rep(0,64)+0*rnorm(64,0,0.75)
 {plot(ddd2$x,100*ddd2$y/length(ddd2$y), type="l", xlab = "P values", ylab = "Estimated percent of p values", main = "Distribution of P values for smartphone usage")
 points(data.combinations.p[13,],ydd, col="blue", type = "p", pch = "|")
 }
+```
+
+```{r, heat-d-data, fig.cap = "Heat map of Cohen's d for different choices of variable coding. Rows represents the coresponding rows in Table 1 and 2 and each column is for one of the 64 different data combinations.", fig.align = "center", fig.width=8}
+
+mm <- (as.matrix(data.combinations.d))
+heatmap.2(x = mm, Rowv = FALSE, Colv = FALSE, dendrogram = "none",
+          key.par=list(mar=c(3.5,1,3,0)),col = heat.colors(50),
+          trace = "none", key = TRUE, keysize = 0.5, density.info='histogram',
+          denscol="blue", ylab = "Different models", xlab = "Different data combinations",
+          lmat=rbind(c(5,4,2), c(6,1,3)), lhei=c(2.5, 5), lwid=c(1, 10, 1))
+
+```
+
+```{r, heat-d-model, fig.cap = "BLAH BLAH BLAH Distribution of P values for different combinations of data for the linear component of the regression model of game play on the weekdays. Note that the curve does not represent the true probability distribution of the p values.", fig.align = "center", fig.width=8}
+
+mm <- (as.matrix(model.combinations.d))
+heatmap.2(x = mm, Rowv = FALSE, Colv = FALSE, dendrogram = "none",
+          key.par=list(mar=c(3.5,1,3,0)),col = heat.colors(50),
+          trace = "none", key = TRUE, keysize = 0.5, density.info='histogram',
+          denscol="blue", ylab = "Different models", xlab = "Different data combinations",
+          lmat=rbind(c(5,4,2), c(6,1,3)), lhei=c(2.5, 5), lwid=c(1, 10, 1))
+
+```
+
+```{r, heat-d-model, fig.cap = "BLAH BLAH BLAH Distribution of P values for different combinations of data for the linear component of the regression model of game play on the weekdays. Note that the curve does not represent the true probability distribution of the p values.", fig.align = "center", fig.width=8}
+
+mm <- (as.matrix(data.combinations.p))
+heatmap.2(x = mm, Rowv = FALSE, Colv = FALSE, dendrogram = "none",
+          key.par=list(mar=c(3.5,1,3,0)),col = heat.colors(10),
+          trace = "none", key = TRUE, keysize = 0.5, density.info='histogram',
+          denscol="blue", ylab = "Different models", xlab = "Different data combinations",
+          lmat=rbind(c(5,4,2), c(6,1,3)), lhei=c(2.5, 5), lwid=c(1, 10, 1))
+
+```
+
+```{r, heat-p-data, fig.cap = "Heat map of p values for different choices of variable coding. Rows represents the coresponding rows in Table 1 and 2 and each column is for one of the 64 different data combinations.", fig.align = "center", fig.width=8}
+
+mm <- (as.matrix(data.combinations.p))
+heatmap.2(x = mm, Rowv = FALSE, Colv = FALSE, dendrogram = "none",
+          key.par=list(mar=c(3.5,1,3,0)),col = heat.colors(10),
+          trace = "none", key = TRUE, keysize = 0.5, density.info='histogram',
+          denscol="blue", ylab = "Different models", xlab = "Different data combinations",
+          lmat=rbind(c(5,4,2), c(6,1,3)), lhei=c(2.5, 5), lwid=c(1, 10, 1))
+
 ```
 
 Interestingly, we find that p values corresponding to the linear component of the regression model for weekday smartphone use is significant (for a significance threshold of $\alpha = 0.01$) only for $`r signif(relative.frequency.data.driven.2,2)`\%$ of the multiverse encapsulating all possible researcher choices in variable coding. This percent drops to $`r signif(relative.frequency.data.driven.1,2)`\%$ for the linear component of weekday game play. It is worth mentioning that for all other models we do not observe any noticable change in the p values. Please note that the significance threshold was originally suggested as $\alpha = 0.001$ in the paper. However, since this conservative threshold resulted in zero multiverse-frequencies, we increased it to $\alpha = 0.01$. These differences, along with the difference in regression parameters reported above, can likely be ascribed to the ambiguities mentioned throughout the paper.
